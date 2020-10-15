@@ -306,7 +306,17 @@ dzs500 = EnergyMeter_DZS500( port='COM10', baudrate=2400, slaveAddress= 0)
 
 dzs100 = EnergyMeter_DZS100(port= 'COM10', baudrate= 2400, slaveAddress= 5)
 
-dzs100.readFrequency()
+# frequency = dzs100.readFrequency(Print= True)
+# current = dzs100.readCurrent(Print= True)
+# voltage = dzs100.readVoltage(Print= True)
+# power = dzs100.readActivePower(Print= True)
+# pf = dzs100.readPowerFactor(Print= True)
+
+# print("Voltage:", voltage/10, "V")
+# print("Current:", current/1000, "A")
+# print("Power:", power/10000, "kW")
+# print("Power Factor", pf/1000)
+# print("Frequency:", frequency/100, "Hz")
         
             
             
