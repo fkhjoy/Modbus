@@ -29,21 +29,22 @@ class EnergyMeter_DZS100():
             bytesize = self.bytesize
         )
     
-    def readCombinedActiveEnergy(self):
+    def readCombinedActiveEnergy(self, Print = True):
         if self.client.connect():
             print("Connected to the Modbus Server/Slave")
             # Reading from a holding register with the below content.
             res = self.client.read_holding_registers(address=0, count=2, unit= self.slaveAddress)
             
             if not res.isError():
-                print(decode(res.registers))
-                return res.registers
+                if Print:
+                    print(decode(res.registers))
+                return decode(res.registers)
             else:
                 print(res)
         else:
             print('Cannot connect to the Modbus Server/Slave')
     
-    def readImportActiveEnergy(self):
+    def readImportActiveEnergy(self, Print = True):
         if self.client.connect():
             print("Connected to the Modbus Server/Slave")
             # Reading from a holding register with the below content.
@@ -51,13 +52,13 @@ class EnergyMeter_DZS100():
             
             if not res.isError():
                 print(decode(res.registers))
-                return res.registers
+                return decode(res.registers)
             else:
                 print(res)
         else:
             print('Cannot connect to the Modbus Server/Slave')
     
-    def readExportActiveEnergy(self):
+    def readExportActiveEnergy(self, Print = True):
         
         if self.client.connect():
             print("Connected to the Modbus Server/Slave")
@@ -65,14 +66,15 @@ class EnergyMeter_DZS100():
             res = self.client.read_holding_registers(address=4, count=2, unit = self.slaveAddress)
             
             if not res.isError():
-                print(decode(res.registers))
-                return res.registers
+                if Print:
+                    print(decode(res.registers))
+                return decode(res.registers)
             else:
                 print(res)
         else:
             print('Cannot connect to the Modbus Server/Slave')
     
-    def readVoltage(self):
+    def readVoltage(self, Print = True):
         
         if self.client.connect():
             print("Connected to the Modbus Server/Slave")
@@ -80,14 +82,15 @@ class EnergyMeter_DZS100():
             res = self.client.read_holding_registers(address=6, count=1, unit = self.slaveAddress)
             
             if not res.isError():
-                print(decode(res.registers))
-                return res.registers
+                if Print:
+                    print(decode(res.registers))
+                return decode(res.registers)
             else:
                 print(res)
         else:
             print('Cannot connect to the Modbus Server/Slave')
     
-    def readCurrent(self):
+    def readCurrent(self, Print = True):
         
         if self.client.connect():
             print("Connected to the Modbus Server/Slave")
@@ -95,14 +98,15 @@ class EnergyMeter_DZS100():
             res = self.client.read_holding_registers(address=7, count=2, unit = self.slaveAddress)
             
             if not res.isError():
-                print(decode(res.registers))
-                return res.registers
+                if Print:
+                    print(decode(res.registers))
+                return decode(res.registers)
             else:
                 print(res)
         else:
             print('Cannot connect to the Modbus Server/Slave')
     
-    def readActivePower(self):
+    def readActivePower(self, Print = True):
         
         if self.client.connect():
             print("Connected to the Modbus Server/Slave")
@@ -110,14 +114,15 @@ class EnergyMeter_DZS100():
             res = self.client.read_holding_registers(address=9, count=2, unit = self.slaveAddress)
             
             if not res.isError():
-                print(decode(res.registers))
-                return res.registers
+                if Print:
+                    print(decode(res.registers))
+                return decode(res.registers)
             else:
                 print(res)
         else:
             print('Cannot connect to the Modbus Server/Slave')
     
-    def readPowerFactor(self):
+    def readPowerFactor(self, Print = True):
         
         if self.client.connect():
             print("Connected to the Modbus Server/Slave")
@@ -126,13 +131,13 @@ class EnergyMeter_DZS100():
             
             if not res.isError():
                 print(decode(res.registers))
-                return res.registers
+                return decode(res.registers)
             else:
                 print(res)
         else:
             print('Cannot connect to the Modbus Server/Slave')
     
-    def readFrequency(self):
+    def readFrequency(self, Print = True):
         
         if self.client.connect():
             print("Connected to the Modbus Server/Slave")
@@ -140,8 +145,9 @@ class EnergyMeter_DZS100():
             res = self.client.read_holding_registers(address=12, count=1, unit = self.slaveAddress)
             
             if not res.isError():
-                print(decode(res.registers))
-                return res.registers
+                if Print:
+                    print(decode(res.registers))
+                return decode(res.registers)
             else:
                 print(res)
         else:
@@ -171,7 +177,7 @@ class EnergyMeter_DZS500():
             bytesize = self.bytesize
         )
         
-    def readCurrent(self, phase = None):
+    def readCurrent(self, phase = None, Print = True):
         
         addr = None        
         if phase == None:
@@ -194,14 +200,15 @@ class EnergyMeter_DZS500():
             res = self.client.read_holding_registers(address=addr, count=1, unit = self.slaveAddress)
             
             if not res.isError():
-                print(decode(res.registers))
+                if Print:
+                    print(decode(res.registers))
                 return decode(res.registers)
             else:
                 print(res)
         else:
             print('Cannot connect to the Modbus Server/Slave')
     
-    def readVoltage(self, phase=None, line=None):
+    def readVoltage(self, phase=None, line=None, Print = True):
         
         addr = None        
         if phase == 'A':
@@ -226,14 +233,15 @@ class EnergyMeter_DZS500():
             res = self.client.read_holding_registers(address=addr, count=1, unit = self.slaveAddress)
             
             if not res.isError():
-                print(decode(res.registers))
+                if Print:
+                    print(decode(res.registers))
                 return decode(res.registers)
             else:
                 print(res)
         else:
             print('Cannot connect to the Modbus Server/Slave')
             
-    def readPower(self, category, phase=None):
+    def readPower(self, category, phase=None, Print = True):
         
         addr = None
         if phase == None:
@@ -285,7 +293,8 @@ class EnergyMeter_DZS500():
             res = self.client.read_holding_registers(address=addr, count=1, unit = self.slaveAddress)
             
             if not res.isError():
-                print(decode(res.registers))
+                if Print:
+                    print(decode(res.registers))
                 return decode(res.registers)
             else:
                 print(res)
