@@ -302,7 +302,9 @@ class EnergyMeter_DZS500():
             print('Cannot connect to the Modbus Server/Slave')
     
         
-dzs500 = EnergyMeter_DZS500( port='COM10', baudrate=2400, slaveAddress= 0)
+dzs500 = EnergyMeter_DZS500( port='COM10', baudrate=9600, slaveAddress= 2)
+
+dzs500.readVoltage(phase= "A", Print= True)
 
 dzs100 = EnergyMeter_DZS100(port= 'COM10', baudrate= 2400, slaveAddress= 5)
 
