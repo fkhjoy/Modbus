@@ -63,7 +63,7 @@ class Modbus_Device():
                 else:
                     print(response)
 
-
-
         else:
             print('Cannot connect to the Modbus Server/Slave')
+
+dzs100 = Modbus_Device(port = 'COM10', slaveAddress = 2)
