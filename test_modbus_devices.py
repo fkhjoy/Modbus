@@ -20,7 +20,7 @@ class Modbus_Device():
         self.slaveAddress = slaveAddress
         self.client = ModbusSerialClient(
             method = self.method,
-            port = self.port, #'/dev/ttyUSB0', #'COM9',
+            port = self.port, #'/dev/ttyUSB0'or #'COM9',
             baudrate = self.baudrate,
             timeout = self.timeout,
             parity = self.parity,
@@ -65,5 +65,37 @@ class Modbus_Device():
 
         else:
             print('Cannot connect to the Modbus Server/Slave')
+    
+    def writeRegister(self, function_Code = 6, register = 0, count = 1, Print = True, value = 0):
+        if self.client.connect():
+            if function_Code == 6:
+                if count > 1:
+                    response = self.client.write_registers(address= register, values= value, unit = self.slaveAddress)
+                    if not response.isError():
+                        print("Written Successfully!")
+                    else:
+                        print("Error Writing")
+                else:
+                    response = self.client.write_register(address= register, value= value, unit = self.slaveAddress)
+                    if not response.isError():
+                        print("Written Successfully!")
+                    else:
+                        print("Error Writing")
+            if function_Code == 5:
+                response = self.client.write_coil(address= register, values= value, unit = self.slaveAddress)
+                if not response.isError():
+                    print("Written Successfully!")
+                else:
+                    print("Error Writing")
 
-dzs100 = Modbus_Device(port = 'COM10', slaveAddress = 2)
+# dzs500 = Modbus_Device(port = 'COM11', slaveAddress = 2)
+
+# dzs500.readRegister(register= 30)
+
+level_sensor = Modbus_Device(port= 'COM9', slaveAddress= 1, parity= 'N')
+#level_sensor.writeRegister(register= 2, value= 3)
+
+P = level_sensor.readRegister(register= 4)
+
+water_level = 107.143*(P/1000 - 1.058) + 22
+print("Water level", "{:.2f}".format(water_level), "cm")
