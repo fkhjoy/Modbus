@@ -10,7 +10,8 @@ def decode(lst):
 
 class EnergyMeter_DZS100():
     
-    def __init__(self, method='rtu', port='/dev/ttyUSB0', baudrate=9600, timeout=3, parity='E', stopbits=1, bytesize=8, slaveAddress = 0):
+    def __init__(self, method='rtu', port='/dev/ttyUSB0', baudrate=9600, timeout=3,
+     parity='E', stopbits=1, bytesize=8, slaveAddress = 0):
         self.method = method
         self.port = port
         self.baudrate = baudrate
@@ -33,7 +34,7 @@ class EnergyMeter_DZS100():
         if self.client.connect():
             print("Connected to the Modbus Server/Slave")
             # Reading from a holding register with the below content.
-            res = self.client.read_holding_registers(address=40201, count=1, unit= self.slaveAddress)
+            res = self.client.read_holding_registers(address=201, count=1, unit= self.slaveAddress)
             
             if not res.isError():
                 if Print:
@@ -48,7 +49,7 @@ class EnergyMeter_DZS100():
         if self.client.connect():
             print("Connected to the Modbus Server/Slave")
             # Reading from a holding register with the below content.
-            res = self.client.read_holding_registers(address=40202, count=1, unit= self.slaveAddress)
+            res = self.client.read_holding_registers(address=202, count=1, unit= self.slaveAddress)
             
             if not res.isError():
                 if Print:
@@ -63,7 +64,7 @@ class EnergyMeter_DZS100():
         if self.client.connect():
             print("Connected to the Modbus Server/Slave")
             # Reading from a holding register with the below content.
-            res = self.client.read_holding_registers(address=40203, count=1, unit= self.slaveAddress)
+            res = self.client.read_holding_registers(address=203, count=1, unit= self.slaveAddress)
             
             if not res.isError():
                 if Print:
@@ -78,7 +79,7 @@ class EnergyMeter_DZS100():
         if self.client.connect():
             print("Connected to the Modbus Server/Slave")
             # Reading from a holding register with the below content.
-            res = self.client.read_holding_registers(address=40213, count=1, unit= self.slaveAddress)
+            res = self.client.read_holding_registers(address=213, count=1, unit= self.slaveAddress)
             
             if not res.isError():
                 if Print:
@@ -93,7 +94,7 @@ class EnergyMeter_DZS100():
         if self.client.connect():
             print("Connected to the Modbus Server/Slave")
             # Reading from a holding register with the below content.
-            res = self.client.read_holding_registers(address=40214, count=1, unit= self.slaveAddress)
+            res = self.client.read_holding_registers(address=214, count=1, unit= self.slaveAddress)
             
             if not res.isError():
                 if Print:
@@ -108,7 +109,7 @@ class EnergyMeter_DZS100():
         if self.client.connect():
             print("Connected to the Modbus Server/Slave")
             # Reading from a holding register with the below content.
-            res = self.client.read_holding_registers(address=40225, count=1, unit= self.slaveAddress)
+            res = self.client.read_holding_registers(address=225, count=1, unit= self.slaveAddress)
             
             if not res.isError():
                 if Print:
@@ -123,7 +124,7 @@ class EnergyMeter_DZS100():
         if self.client.connect():
             print("Connected to the Modbus Server/Slave")
             # Reading from a holding register with the below content.
-            res = self.client.read_holding_registers(address=40234, count=1, unit= self.slaveAddress)
+            res = self.client.read_holding_registers(address=234, count=1, unit= self.slaveAddress)
             
             if not res.isError():
                 if Print:
@@ -138,7 +139,7 @@ class EnergyMeter_DZS100():
         if self.client.connect():
             print("Connected to the Modbus Server/Slave")
             # Reading from a holding register with the below content.
-            res = self.client.read_holding_registers(address=40015, count=1, unit= self.slaveAddress)
+            res = self.client.read_holding_registers(address=15, count=1, unit= self.slaveAddress)
             
             if not res.isError():
                 if Print:
