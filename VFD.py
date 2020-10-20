@@ -8,7 +8,7 @@ def decode(lst):
     return int(s,0)
 
 
-class EnergyMeter_DZS100():
+class VFD_F800():
     
     def __init__(self, method='rtu', port='/dev/ttyUSB0', baudrate=9600, timeout=3,
      parity='E', stopbits=1, bytesize=8, slaveAddress = 0):
