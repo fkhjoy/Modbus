@@ -300,6 +300,33 @@ class EnergyMeter_DZS500():
                 print(res)
         else:
             print('Cannot connect to the Modbus Server/Slave')
+
+    def writeTime(self, value, unit='seconds'):
+        addr = None
+        if unit=='seconds':
+            addr = 500
+        elif unit=='minutes':
+            addr = 501
+        elif unit=='hour':
+            addr = 502
+        elif unit=='week':
+            addr = 503
+        elif unit=='day':
+            addr = 504
+        elif unit=='month':
+            addr = 505
+        elif unit=='year':
+            addr = 506
+        else:
+            print("Incorrect input")
+
+        if self.client.connect():
+            print("Connected to the Modbus Server/Slave")
+            # Reading from a holding register with the below content.
+            self.client.write_register(address=addr, value)
+            
+        else:
+            print('Cannot connect to the Modbus Server/Slave')
     
         
 dzs500 = EnergyMeter_DZS500( port='COM10', baudrate=9600, slaveAddress= 2)
