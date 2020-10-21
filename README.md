@@ -14,7 +14,7 @@ This repository contains all the Python modules for communicating with modbus de
 ## Energy Meter
 This module contains 2 classes: 
 
-```EnergyMeter_DZS100()```
+```EnergyMeter_DZS100():```
 We can create object with initialization and use methods of those classes like below. We just have to pass boolean value for those methods if we want to print or not.
 ```
 dzs100 = EnergyMeter_DZS100(port='COM12', baudrate=9600, slaveAddress= 2)
@@ -22,7 +22,7 @@ combined_active_energy = dzs100.readCombinedActiveEnergy(print = False)
 import_active_energy = dzs100.readImportActiveEnergy(print = False)
 frequency = dzs100.readFrequency(print = False)
 ```
-```EnergyMeter_DZS500()```
+```EnergyMeter_DZS500():```
 We can create object like DZS100. But we have to pass parameters to the methods based on the query. In ```readCurrent(self, phase = None, Print = True)``` method we have to pass the phase name as string among 'A', 'B', 'C'
 ```
 current_A = dzs500.readCurrent(phase = 'A')
