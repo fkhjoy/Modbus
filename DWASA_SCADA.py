@@ -12,6 +12,10 @@ To-do for Foysal:
         for details.
     2. Add Level Transmitter, Energy meter and VFD classes to the main code. Make them easily accessable
     and configurable.
+To-do for Dhrubo:
+    1. Make a class for AMR
+    2. Make a class for SCADA data comprising of all the device classes. The object will have 
+    a dictionary, this will help us for querry
 '''
 import paho.mqtt.client as mqtt
 import time
