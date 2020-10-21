@@ -26,7 +26,7 @@ frequency = dzs100.readFrequency(print = False)
 We can create object like DZS100. But we have to pass parameters to the methods based on the query. In ```readCurrent(self, phase = None, Print = True)``` method we have to pass the phase name as string among 'A', 'B', 'C'
 ```
 current_A = dzs500.readCurrent(phase = 'A')
-current_B = dzs500.readCurrent(phase = 'B'\)
+current_B = dzs500.readCurrent(phase = 'B')
 ```
 In ```readVoltage(self, phase=None, line=None, Print = True)``` method we can read voltage of phase or voltage of line. We have to pass parameters based on the requirement. We can read voltage of phases 'A', 'B', 'C' or voltage of lines 'AB', 'BC', 'CA'
 ```
@@ -34,7 +34,7 @@ voltage_A = dzs500.readVoltage(phase = 'A')
 voltage_AB = dzs500.readVoltage(line = 'AB')
 ```
 In ```readPower(self, category, phase=None, Print = True)``` method we have several options for category and phase. For category we have 'active', 'reactive', 'apparent' and 'factor'. Foy phases 'A', 'B' and 'C'.
-So if we want to read "Phase A active power" we can call the method like below
+So if we want to read ```Phase A active power``` or ```Phase B reactive power``` we can call the method like below
 ```
 phaseA_activePower = dzs500.readPower(category = 'active', phase = 'A')
 phaseB_reactivePower = dzs500.readPower(category = 'reactive', phase = 'B')
