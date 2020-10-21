@@ -149,6 +149,15 @@ class VFD_F800():
                 print(res)
         else:
             print('Cannot connect to the Modbus Server/Slave')
+            
+    def writeRunningFrequency(self, frequency_value):
+        if self.client.connect():
+            print("Connected to the Modbus Server/Slave")
+            # Writing to a holding register with the below content.
+            self.client.write_register(address=15, frequency_value)
+            
+        else:
+            print('Cannot connect to the Modbus Server/Slave')
 
 vfd = VFD_F800(port= 'COM9')
 vfd.readOutputFrequency(Print= True)
