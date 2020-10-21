@@ -300,13 +300,77 @@ class EnergyMeter_DZS500():
                 print(res)
         else:
             print('Cannot connect to the Modbus Server/Slave')
+
+    def readBaudrate(self, Print = True):
+        if self.client.connect():
+            response = self.client.read_holding_registers(address= 129, count = 1, unit = self.slaveAddress)
+            if not response.isError():
+                if Print:
+                    print(decode(response.registers))
+                return decode(response.registers)
+            else:
+                print(response)
+        else:
+            print('Cannot connect to the Modbus Server/Slave')
+    
+    def changeBaudrate(self, baudrate = 9600, Print = True):
+        if self.client.connect():
+            response = self.client.write_register(address= 129, value = baudrate, unit = self.slaveAddress)
+            if not response.isError():
+                if Print:
+                    print(response)
+            else:
+                print(response)
+        else:
+            print('Cannot connect to the Modbus Server/Slave')
+
+
+    def writeTime(self, value, unit='seconds'):
+        addr = None
+        if unit=='seconds':
+            addr = 500
+        elif unit=='minutes':
+            addr = 501
+        elif unit=='hour':
+            addr = 502
+        elif unit=='week':
+            addr = 503
+        elif unit=='day':
+            addr = 504
+        elif unit=='month':
+            addr = 505
+        elif unit=='year':
+            addr = 506
+        else:
+            print("Incorrect input")
+
+        if self.client.connect():
+            print("Connected to the Modbus Server/Slave")
+            # Reading from a holding register with the below content.
+            response = self.client.write_register(address=addr, value = value)
+            print(response)
+            
+        else:
+            print('Cannot connect to the Modbus Server/Slave')
+    
+    def changeAddress(self, address = 2, Print = True):
+        if self.client.connect():
+            response = self.client.write_register(address= self.slaveAddress, value = address,
+            unit = self.slaveAddress)
+            if Print:
+                print(response)
+        else:
+            print('Cannot connect to the Modbus Server/Slave')
+            
     
         
-dzs500 = EnergyMeter_DZS500( port='COM10', baudrate=9600, slaveAddress= 2)
+dzs500 = EnergyMeter_DZS500( port='COM12', baudrate=9600, slaveAddress= 2)
 
-dzs500.readVoltage(phase= "A", Print= True)
+#dzs500.readVoltage(phase= "A", Print= True)
 
-dzs100 = EnergyMeter_DZS100(port= 'COM10', baudrate= 2400, slaveAddress= 5)
+dzs500.readBaudrate()
+#dzs500.changeBaudrate(baudrate= 9600)
+#dzs100 = EnergyMeter_DZS100(port= 'COM12', baudrate= 2400, slaveAddress= 5)
 
 # frequency = dzs100.readFrequency(Print= True)
 # current = dzs100.readCurrent(Print= True)
