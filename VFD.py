@@ -154,7 +154,7 @@ class VFD_F800():
         if self.client.connect():
             print("Connected to the Modbus Server/Slave")
             # Writing to a holding register with the below content.
-            self.client.write_register(address=15, frequency_value)
+            self.client.write_register(address=15, value = frequency_value)
             
         else:
             print('Cannot connect to the Modbus Server/Slave')
