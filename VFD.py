@@ -149,6 +149,20 @@ class VFD_F800():
                 print(res)
         else:
             print('Cannot connect to the Modbus Server/Slave')
+    def readRunningSpeed(self, Print=False):
+        if self.client.connect():
+            print("Connected to the Modbus Server/Slave")
+            # Reading from a holding register with the below content.
+            res = self.client.read_holding_registers(address=206, count=1, unit= self.slaveAddress)
+            
+            if not res.isError():
+                if Print:
+                    print(decode(res.registers))
+                return decode(res.registers)
+            else:
+                print(res)
+        else:
+            print('Cannot connect to the Modbus Server/Slave')
             
     def writeRunningFrequency(self, frequency_value):
         if self.client.connect():
