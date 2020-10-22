@@ -175,5 +175,5 @@ class VFD_F800():
         else:
             print('Cannot connect to the Modbus Server/Slave')
 
-vfd = VFD_F800(port= 'COM9')
-vfd.readOutputFrequency(Print= True)
+# vfd = VFD_F800(port= 'COM9')
+# vfd.readOutputFrequency(Print= True)

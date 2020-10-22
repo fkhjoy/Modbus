@@ -65,6 +65,6 @@ class AR6451():
             pressure = self.Pressure(Print = Print)
             return (self.m*pressure + self.b)*2.54
 
-level_sensor = AR6451()
+# level_sensor = AR6451()
 
-p = level_sensor.Pressure(Print = False)
+# p = level_sensor.Pressure(Print = False)
