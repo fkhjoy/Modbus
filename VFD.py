@@ -7,6 +7,8 @@ def decode(lst):
         s += x[2:]
     return int(s,0)
 
+def toggle_bit(number, bit_position):
+    return number^(1 << bit_position-1)
 
 class VFD_F800():
     
