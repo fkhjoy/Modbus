@@ -109,7 +109,7 @@ port = 8083 #MQTT broker port
 Pub_Topic = 'scada_test' # Topic to publish
 Sub_Topic = 'DMA/Sub/SCADA' # Topic to subscribe
 
-client = mqtt.Client('SCADA')
+client = mqtt.Client(transport= 'websockets')
 client.connect(broker, port)
 client.on_message = on_message
 
@@ -118,10 +118,10 @@ client.subscribe(Sub_Topic)
 
 
 while True:
+    time.sleep(10)
     client.loop()
-
-    #SCADA_Data_Json = json.dumps(SCADA_Data)
-    client.publish(Pub_Topic, updateParameters())
+    SCADA_Data_Json = updateParameters()
+    client.publish(Pub_Topic, SCADA_Data_Json)
 
     if prev_Message != Message:
         print(Message)
@@ -129,5 +129,5 @@ while True:
         Command = json.loads(Message)
     else:
         continue
-    time.sleep(60)
+    
     
