@@ -21,7 +21,10 @@ import paho.mqtt.client as mqtt
 import time
 from datetime import datetime
 import json
+from random import seed
+from random import randint
 
+seed(1)
 
 # Json format for mqtt data sending
 
@@ -62,6 +65,34 @@ def makeTimeStamp():
     formatted_date_time = now.strftime("%Y-%m-%d %H:%M:%S")
     return formatted_date_time
 
+def updateParameters():
+    global SCADA_Data
+    SCADA_Data["Time_Stamp"] = makeTimeStamp()
+    SCADA_Data["Energy"]["Phase_A_Voltage"] = 230 + randint(-10, 10)
+    SCADA_Data["Energy"]["Phase_B_Voltage"] = 230 + randint(-10, 10)
+    SCADA_Data["Energy"]["Phase_C_Voltage"] = 230 + randint(-10, 10)
+    SCADA_Data["Energy"]["Phase_A_Current"] = 70 + randint(-10, 10)
+    SCADA_Data["Energy"]["Phase_B_Current"] = 70 + randint(-10, 10)
+    SCADA_Data["Energy"]["Phase_C_Current"] = 70 + randint(-10, 10)
+    SCADA_Data["Energy"]["Line_AB_Voltage"] = 230 + randint(-10, 10)
+    SCADA_Data["Energy"]["Line_BC_Voltage"] = 230 + randint(-10, 10)
+    SCADA_Data["Energy"]["Line_CA_Voltage"] = 230 + randint(-10, 10)
+    SCADA_Data["Energy"]["Active_Power"] = 200 + randint(-10, 10)
+    SCADA_Data["Energy"]["Power_Factor"] = 0.5 + randint(-10, 10)/100
+    SCADA_Data["Energy"]["Load"] = 54 + randint(-10, 10)
+
+    SCADA_Data["VFD"]["Frequency"] = 50 + randint(-10, 10)/100
+    SCADA_Data["VFD"]["Motor_Operating_Voltage"] = 230 + randint(-10, 10)
+    SCADA_Data["VFD"]["Motor_Operating_Current"] = 75 + randint(-5, 5)
+
+    SCADA_Data["Water_Data"]["Water_Flow"] = 10000 + randint(-100, 100)
+    SCADA_Data["Water_Data"]["Water_Pressure"] = 350 + randint(-10, 10)
+    SCADA_Data["Water_Data"]["Water_Meter_Reading"] += SCADA_Data["Water_Data"]["Water_Flow"]
+    SCADA_Data["Water_Data"]["Water_Level"] = 32 + randint(-10, 10)/100
+
+    return json.dumps(SCADA_Data)
+
+
 
 Message = "" #<String> this will store the json foramtted Messages from dashboard
 prev_Message = "" #For checking repeated comands
@@ -73,9 +104,9 @@ def on_message(client, userdata, message):
     # print("message qos=",message.qos)
     # print("message retain flag=",message.retain)
 
-broker = 'broker.hivemq.com' #MQTT broker address
-port = 1883 #MQTT broker port
-Pub_Topic = 'DMA/Pub/SCADA' # Topic to publish
+broker = '123.49.33.109' #MQTT broker address
+port = 8083 #MQTT broker port
+Pub_Topic = 'scada_test' # Topic to publish
 Sub_Topic = 'DMA/Sub/SCADA' # Topic to subscribe
 
 client = mqtt.Client('SCADA')
@@ -89,9 +120,8 @@ client.subscribe(Sub_Topic)
 while True:
     client.loop()
 
-    SCADA_Data["Time_Stamp"] = makeTimeStamp()
-    SCADA_Data_Json = json.dumps(SCADA_Data)
-    client.publish(Pub_Topic, SCADA_Data_Json)
+    #SCADA_Data_Json = json.dumps(SCADA_Data)
+    client.publish(Pub_Topic, updateParameters())
 
     if prev_Message != Message:
         print(Message)
@@ -99,5 +129,5 @@ while True:
         Command = json.loads(Message)
     else:
         continue
-    time.sleep(5)
+    time.sleep(60)
     
