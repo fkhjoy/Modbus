@@ -24,7 +24,7 @@ import json
 from random import seed
 from random import randint
 
-seed(1)
+
 
 # Json format for mqtt data sending
 
