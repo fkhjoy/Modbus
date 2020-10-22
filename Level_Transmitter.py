@@ -68,3 +68,7 @@ class AR6451():
 level_sensor = AR6451()
 
 p = level_sensor.Pressure(Print = False)
+
+l = level_sensor.Water_Level(Print= False)
+
+print(l)
