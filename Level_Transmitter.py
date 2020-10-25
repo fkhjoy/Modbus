@@ -31,7 +31,9 @@ class AR6451():
             stopbits = self.stopbits,
             bytesize = self.bytesize
         )
-    
+    def get_Address(self, address):
+        self.slaveAddress = address
+
     def readRegister(self, address = 0, Print = True):
         if self.client.connect():
             response = self.client.read_holding_registers(address = address, unit = self.slaveAddress)
