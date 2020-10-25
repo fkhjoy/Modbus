@@ -32,6 +32,9 @@ class VFD_F800():
             bytesize = self.bytesize
         )
     
+    def get_Address(self, address):
+        self.slaveAddress = address
+    
     def readOutputFrequency(self, Print=False):
         if self.client.connect():
             print("Connected to the Modbus Server/Slave")
