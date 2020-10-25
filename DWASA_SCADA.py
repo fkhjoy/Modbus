@@ -60,7 +60,31 @@ class SCADA_Devices():
                     "Water_Level":32
                 }
             }
+    
+    def get_ID(self, ID):
+        self.ID = ID
 
+    def get_VFD_Address(self, address = 0):
+        self.VFD.get_Address(address= address)
+    
+    def get_Energy_Meter_Address(self, address = 2):
+        self.Energy_Meter.get_Address(address= address)
+    
+    def get_Level_Transmitter_Address(self, address = 1):
+        self.Level_Transmitter.get_Address(address= address)
+
+    def get_AMR_Flow_Per_Pulse(self, flow_per_pulse):
+        self.AMR.get_flow_per_pulse(flow_per_pulse= flow_per_pulse)
+    
+    def get_AMR_Flow_Unit(self, flow_unit):
+        self.AMR.get_flow_unit(flow_unit= flow_unit)
+    
+    def get_AMR_Time_Unit(self, time_unit):
+        self.AMR.get_time_unit(time_unit= time_unit)
+
+    def reset_Counter(self):
+        self.AMR.reset_counter()
+        
     def makeTimeStamp(self):
         now = datetime.now()
         self.formatted_date_time = now.strftime("%Y-%m-%d %H:%M:%S")
@@ -108,6 +132,7 @@ SCADA = SCADA_Devices()
 
 Message = "" #<String> this will store the json foramtted Messages from dashboard
 prev_Message = "" #For checking repeated comands
+
 def on_message(client, userdata, message):
     global Message
     Message = str(message.payload.decode("utf-8"))
