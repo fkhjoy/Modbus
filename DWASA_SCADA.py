@@ -77,11 +77,15 @@ class SCADA_Devices():
         now = datetime.now()
         self.formatted_date_time = now.strftime("%Y-%m-%d %H:%M:%S")
         return self.formatted_date_time
+    
+    def query(self, type, parameter):
+        self.updateParameters()
+        return self.SCADA_Data[type][parameter]
 
     def updateParameters(self, Print = False):
         self.SCADA_Data["ID"] = self.ID
         self.SCADA_Data["Time_Stamp"] = self.makeTimeStamp()
-        
+
         self.SCADA_Data["Energy"]["Phase_A_Voltage"] = self.Energy_Meter.readVoltage(phase= 'A', Print = Print)
         self.SCADA_Data["Energy"]["Phase_B_Voltage"] = self.Energy_Meter.readVoltage(phase= 'B', Print = Print)
         self.SCADA_Data["Energy"]["Phase_C_Voltage"] = self.Energy_Meter.readVoltage(phase= 'C', Print = Print)
@@ -95,6 +99,21 @@ class SCADA_Devices():
         self.SCADA_Data["Energy"]["Power_Factor"] = self.VFD.readOutputPower(Print = Print)/self.VFD.readInputPower(Print = Print)
         self.SCADA_Data["Energy"]["Load"] = (self.SCADA_Data["Energy"]["Active_Power"]**2 - self.SCADA_Data["Energy"]["Power_Factor"]**2)**0.5
         
+        if self.SCADA_Data["Energy"]["Load"] != 0:
+            self.SCADA_Data["VFD"]["VFD_Status"] = 1
+        else:
+            self.SCADA_Data["VFD"]["VFD_Status"] = 0
+        self.SCADA_Data["VFD"]["Frequency"] = self.VFD.readOutputFrequency(Print= Print)
+        self.SCADA_Data["VFD"]["Motor_Operating_Voltage"] = self.VFD.readOutputVoltage(Print= Print)
+        self.SCADA_Data["VFD"]["Motor_Operating_Current"] = self.VFD.readOutputCurrent(Print= Print)
+        self.SCADA_Data["VFD"]["RPM"] = self.VFD.readRunningSpeed(Print= Print)
+
+        self.SCADA_Data["Water_Data"]["Water_Flow"] = self.AMR.flow_rate()
+        self.SCADA_Data["Water_Data"]["Water_Pressure"] = 341 # random value
+        self.SCADA_Data["Water_Data"]["Water_Meter_Reading"] = self.AMR.total_water_passed()
+        self.SCADA_Data["Water_Data"]["Water_Level"] = self.Level_Transmitter.Water_Level(Print= Print)
+
+        return json.dumps(self.SCADA_Data)
 
 # Json format for mqtt data sending
 
