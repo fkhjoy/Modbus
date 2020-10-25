@@ -28,6 +28,8 @@ class EnergyMeter_DZS100():
             stopbits = self.stopbits,
             bytesize = self.bytesize
         )
+    def get_Address(self, address):
+        self.slaveAddress = address
     
     def readCombinedActiveEnergy(self, Print = True):
         if self.client.connect():
@@ -158,7 +160,7 @@ class EnergyMeter_DZS100():
 
 class EnergyMeter_DZS500():
     
-    def __init__(self, method='rtu', port='/dev/ttyUSB0', baudrate=9600, timeout=3, parity='E', stopbits=1, bytesize=8, slaveAddress = 0):
+    def __init__(self, method='rtu', port='/dev/ttyUSB0', baudrate=9600, timeout=3, parity='E', stopbits=1, bytesize=8, slaveAddress = 2):
         self.method = method
         self.port = port
         self.baudrate = baudrate
@@ -176,6 +178,8 @@ class EnergyMeter_DZS500():
             stopbits = self.stopbits,
             bytesize = self.bytesize
         )
+    def get_Address(self, address):
+        self.slaveAddress = address
         
     def readCurrent(self, phase = None, Print = True):
         
@@ -364,11 +368,10 @@ class EnergyMeter_DZS500():
             
     
         
-dzs500 = EnergyMeter_DZS500( port='COM12', baudrate=9600, slaveAddress= 2)
+# dzs500 = EnergyMeter_DZS500( port='COM12', baudrate=9600, slaveAddress= 2)
 
 #dzs500.readVoltage(phase= "A", Print= True)
 
-dzs500.readBaudrate()
 #dzs500.changeBaudrate(baudrate= 9600)
 #dzs100 = EnergyMeter_DZS100(port= 'COM12', baudrate= 2400, slaveAddress= 5)
 
