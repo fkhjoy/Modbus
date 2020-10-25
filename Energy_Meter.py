@@ -28,6 +28,8 @@ class EnergyMeter_DZS100():
             stopbits = self.stopbits,
             bytesize = self.bytesize
         )
+    def get_Address(self, address):
+        self.slaveAddress = address
     
     def readCombinedActiveEnergy(self, Print = True):
         if self.client.connect():
@@ -176,6 +178,8 @@ class EnergyMeter_DZS500():
             stopbits = self.stopbits,
             bytesize = self.bytesize
         )
+    def get_Address(self, address):
+        self.slaveAddress = address
         
     def readCurrent(self, phase = None, Print = True):
         
