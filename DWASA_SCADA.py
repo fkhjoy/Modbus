@@ -23,8 +23,78 @@ from datetime import datetime
 import json
 from random import seed
 from random import randint
+from Energy_Meter import EnergyMeter_DZS500
+from Level_Transmitter import AR6451
+from VFD import VFD_F800
+from AMR import AMR
 
 
+# class for all the devices in the SCADA
+
+class SCADA_Devices():
+    def __init__(self, port = '/dev/ttyUSB0', vfd_slaveAddress = 0,
+    energy_meter_slaveAddress = 2, level_transmitter_slaveAddress = 1, 
+    amr_mode = 'BCM', amr_pin = 23, amr_flow_per_pulse = 10, amr_past_water_flow = 100000):
+        self.ID = 1500
+        self.port = port
+        self.VFD = VFD_F800(port= port, slaveAddress= vfd_slaveAddress)
+        self.Level_Transmitter = AR6451(port= port, slaveAddress= level_transmitter_slaveAddress)
+        self.Energy_Meter = EnergyMeter_DZS500(port= port, slaveAddress= energy_meter_slaveAddress)
+        self.AMR = AMR(mode= amr_mode, pin= amr_pin, flow_per_pulse= amr_flow_per_pulse, past_water_flow= amr_past_water_flow)
+        self.SCADA_Data = {
+                "ID":1500,
+                "Time_Stamp":"2019-11-06 16:04:52",
+                "Energy":{
+                    "Phase_A_Voltage":223.4,
+                    "Phase_B_Voltage":223.4,
+                    "Phase_C_Voltage":223.4,
+                    "Line_AB_Voltage":403.2,
+                    "Line_BC_Voltage":443.13,
+                    "Line_CA_Voltage":392.2,
+                    "Phase_A_Current":77.4,
+                    "Phase_B_Current":76.5,
+                    "Phase_C_Current":75.45,
+                    "Active_Power":213,
+                    "Power_Factor":0.56,
+                    "Load":54.2
+                },
+                "VFD":{
+                    "VFD_Status":1,
+                    "Frequency":50.1,
+                    "Motor_Operating_Voltage":234.1,
+                    "Motor_Operating_Current":77,
+                    "RPM":2414
+                },
+                "Water_Data":{
+                    "Water_Flow":10000,
+                    "Water_Pressure":341,
+                    "Water_Meter_Reading":1234131,
+                    "Water_Level":32
+                }
+            }
+
+    def makeTimeStamp(self):
+        now = datetime.now()
+        self.formatted_date_time = now.strftime("%Y-%m-%d %H:%M:%S")
+        return self.formatted_date_time
+
+    def updateParameters(self, Print = False):
+        self.SCADA_Data["ID"] = self.ID
+        self.SCADA_Data["Time_Stamp"] = self.makeTimeStamp()
+        
+        self.SCADA_Data["Energy"]["Phase_A_Voltage"] = self.Energy_Meter.readVoltage(phase= 'A', Print = Print)
+        self.SCADA_Data["Energy"]["Phase_B_Voltage"] = self.Energy_Meter.readVoltage(phase= 'B', Print = Print)
+        self.SCADA_Data["Energy"]["Phase_C_Voltage"] = self.Energy_Meter.readVoltage(phase= 'C', Print = Print)
+        self.SCADA_Data["Energy"]["Line_AB_Voltage"] = self.Energy_Meter.readVoltage(line= 'AB', Print = Print)
+        self.SCADA_Data["Energy"]["Line_BC_Voltage"] = self.Energy_Meter.readVoltage(line= 'BC', Print = Print)
+        self.SCADA_Data["Energy"]["Line_CA_Voltage"] = self.Energy_Meter.readVoltage(line= 'CA', Print = Print)
+        self.SCADA_Data["Energy"]["Phase_A_Current"] = self.VFD.readOutputPower(Print = Print)/self.Energy_Meter.readVoltage(phase= 'A', Print = Print)
+        self.SCADA_Data["Energy"]["Phase_B_Current"] = self.VFD.readOutputPower(Print = Print)/self.Energy_Meter.readVoltage(phase= 'B', Print = Print)
+        self.SCADA_Data["Energy"]["Phase_C_Current"] = self.VFD.readOutputPower(Print = Print)/self.Energy_Meter.readVoltage(phase= 'C', Print = Print)
+        self.SCADA_Data["Energy"]["Active_Power"] = self.VFD.readOutputPower(Print = Print)
+        self.SCADA_Data["Energy"]["Power_Factor"] = self.VFD.readOutputPower(Print = Print)/self.VFD.readInputPower(Print = Print)
+        self.SCADA_Data["Energy"]["Load"] = (self.SCADA_Data["Energy"]["Active_Power"]**2 - self.SCADA_Data["Energy"]["Power_Factor"]**2)**0.5
+        
 
 # Json format for mqtt data sending
 
