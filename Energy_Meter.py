@@ -158,7 +158,7 @@ class EnergyMeter_DZS100():
 
 class EnergyMeter_DZS500():
     
-    def __init__(self, method='rtu', port='/dev/ttyUSB0', baudrate=9600, timeout=3, parity='E', stopbits=1, bytesize=8, slaveAddress = 0):
+    def __init__(self, method='rtu', port='/dev/ttyUSB0', baudrate=9600, timeout=3, parity='E', stopbits=1, bytesize=8, slaveAddress = 2):
         self.method = method
         self.port = port
         self.baudrate = baudrate
