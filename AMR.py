@@ -52,6 +52,18 @@ class AMR():
         self.pulse_count += 1
         print(self.pulse_count)
     
+    def get_flow_unit(self, flow_unit = 'cm'):
+        self.flow_unit = flow_unit
+    
+    def get_time_unit(self, time_unit = 'second'):
+        self.time_unit = time_unit
+    
+    def get_flow_per_pulse(self, flow_per_pulse):
+        self.flow_per_pulse = flow_per_pulse
+    
+    def get_past_water_flow(self, past_water_flow):
+        self.past_water_flow = past_water_flow
+    
     def print_current_count(self):
         print(self.pulse_count)
 
