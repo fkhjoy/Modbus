@@ -178,6 +178,11 @@ class VFD_F800():
         else:
             print('Cannot connect to the Modbus Server/Slave')
             return -1
+    '''
+    @todo Add Fault History function to the class
+    @body We need another method in VFD class that will show the faults history.
+    The detailed documentation will be provided
+    '''
             
     def writeRunningFrequency(self, frequency_value):
         if self.client.connect():
@@ -188,6 +193,7 @@ class VFD_F800():
         else:
             print('Cannot connect to the Modbus Server/Slave')
             return -1
+
 
 # vfd = VFD_F800(port= 'COM9')
 # vfd.readOutputFrequency(Print= True)
