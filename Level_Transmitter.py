@@ -45,6 +45,7 @@ class AR6451():
                 print(response)
         else:
             print("Cannot connect to slave")
+            return -1
     
     def fitLine(self, Points):
         x = Points[0]
