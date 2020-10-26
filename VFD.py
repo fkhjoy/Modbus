@@ -184,7 +184,11 @@ class VFD_F800():
     The detailed documentation will be provided
     '''
     def readFaultHistory(self, Print = False):
-        #add code here
+        if self.client.connect():
+            print("Connected to the Modbus Server/Slave")
+        else:
+            print('Cannot connect to the Modbus Server/Slave')
+            return -1
             
     def writeRunningFrequency(self, frequency_value):
         if self.client.connect():
