@@ -183,6 +183,8 @@ class VFD_F800():
     @body We need another method in VFD class that will show the faults history.
     The detailed documentation will be provided
     '''
+    def readFaultHistory(self, Print = False):
+        #add code here
             
     def writeRunningFrequency(self, frequency_value):
         if self.client.connect():
