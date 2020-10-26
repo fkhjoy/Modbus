@@ -32,6 +32,9 @@ class VFD_F800():
             bytesize = self.bytesize
         )
     
+    def get_Address(self, address):
+        self.slaveAddress = address
+    
     def readOutputFrequency(self, Print=False):
         if self.client.connect():
             print("Connected to the Modbus Server/Slave")
@@ -46,6 +49,7 @@ class VFD_F800():
                 print(res)
         else:
             print('Cannot connect to the Modbus Server/Slave')
+            return -1
             
     def readOutputCurrent(self, Print=False):
         if self.client.connect():
@@ -61,6 +65,7 @@ class VFD_F800():
                 print(res)
         else:
             print('Cannot connect to the Modbus Server/Slave')
+            return -1
             
     def readOutputVoltage(self, Print=False):
         if self.client.connect():
@@ -76,6 +81,7 @@ class VFD_F800():
                 print(res)
         else:
             print('Cannot connect to the Modbus Server/Slave')
+            return -1
     
     def readInputPower(self, Print=False):
         if self.client.connect():
@@ -91,6 +97,7 @@ class VFD_F800():
                 print(res)
         else:
             print('Cannot connect to the Modbus Server/Slave')
+            return -1
             
     def readOutputPower(self, Print=False):
         if self.client.connect():
@@ -106,6 +113,7 @@ class VFD_F800():
                 print(res)
         else:
             print('Cannot connect to the Modbus Server/Slave')
+            return -1
     
     def readCumulativePower(self, Print=False):
         if self.client.connect():
@@ -121,6 +129,7 @@ class VFD_F800():
                 print(res)
         else:
             print('Cannot connect to the Modbus Server/Slave')
+            return -1
             
     def readOutputMotor(self, Print=False):
         if self.client.connect():
@@ -136,6 +145,7 @@ class VFD_F800():
                 print(res)
         else:
             print('Cannot connect to the Modbus Server/Slave')
+            return -1
             
     def readRunningFrequency(self, Print=False):
         if self.client.connect():
@@ -151,6 +161,8 @@ class VFD_F800():
                 print(res)
         else:
             print('Cannot connect to the Modbus Server/Slave')
+            return -1
+
     def readRunningSpeed(self, Print=False):
         if self.client.connect():
             print("Connected to the Modbus Server/Slave")
@@ -165,6 +177,7 @@ class VFD_F800():
                 print(res)
         else:
             print('Cannot connect to the Modbus Server/Slave')
+            return -1
             
     def writeRunningFrequency(self, frequency_value):
         if self.client.connect():
@@ -174,6 +187,7 @@ class VFD_F800():
             
         else:
             print('Cannot connect to the Modbus Server/Slave')
+            return -1
 
-vfd = VFD_F800(port= 'COM9')
-vfd.readOutputFrequency(Print= True)
+# vfd = VFD_F800(port= 'COM9')
+# vfd.readOutputFrequency(Print= True)
