@@ -178,14 +178,16 @@ class VFD_F800():
         else:
             print('Cannot connect to the Modbus Server/Slave')
             return -1
-    '''
-    @todo Add Fault History function to the class
-    @body We need another method in VFD class that will show the faults history.
-    The detailed documentation will be provided
-    '''
+            
     def readFaultHistory(self, Print = False):
         if self.client.connect():
             print("Connected to the Modbus Server/Slave")
+            response = self.client.read_holding_registers(address = 501, count = 1, unit = self.slaveAddress)
+            if not response.isError():
+                Fault_code = decode(response.registers)
+                return Fault_code
+            else:
+                print(response)
         else:
             print('Cannot connect to the Modbus Server/Slave')
             return -1
