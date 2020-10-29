@@ -12,25 +12,10 @@ def toggle_bit(number, bit_position):
 
 class VFD_F800():
     
-    def __init__(self, method='rtu', port='/dev/ttyUSB0', baudrate=9600, timeout=3,
-     parity='E', stopbits=1, bytesize=8, slaveAddress = 0):
-        self.method = method
-        self.port = port
-        self.baudrate = baudrate
-        self.timeout = timeout
-        self.parity = parity
-        self.stopbits = stopbits
-        self.bytesize = bytesize
+    def __init__(self, client, slaveAddress = 0):
+        
         self.slaveAddress = slaveAddress
-        self.client = ModbusSerialClient(
-            method = self.method,
-            port = self.port, #'/dev/ttyUSB0', #'COM9',
-            baudrate = self.baudrate,
-            timeout = self.timeout,
-            parity = self.parity,
-            stopbits = self.stopbits,
-            bytesize = self.bytesize
-        )
+        self.client = client
     
     def get_Address(self, address):
         self.slaveAddress = address
@@ -47,6 +32,7 @@ class VFD_F800():
                 return decode(res.registers)
             else:
                 print(res)
+                return -1
         else:
             print('Cannot connect to the Modbus Server/Slave')
             return -1
@@ -63,6 +49,7 @@ class VFD_F800():
                 return decode(res.registers)
             else:
                 print(res)
+                return -1
         else:
             print('Cannot connect to the Modbus Server/Slave')
             return -1
@@ -79,6 +66,8 @@ class VFD_F800():
                 return decode(res.registers)
             else:
                 print(res)
+                return -1
+
         else:
             print('Cannot connect to the Modbus Server/Slave')
             return -1
@@ -95,6 +84,7 @@ class VFD_F800():
                 return decode(res.registers)
             else:
                 print(res)
+                return -1
         else:
             print('Cannot connect to the Modbus Server/Slave')
             return -1
@@ -111,6 +101,7 @@ class VFD_F800():
                 return decode(res.registers)
             else:
                 print(res)
+                return -1
         else:
             print('Cannot connect to the Modbus Server/Slave')
             return -1
@@ -127,6 +118,7 @@ class VFD_F800():
                 return decode(res.registers)
             else:
                 print(res)
+                return -1
         else:
             print('Cannot connect to the Modbus Server/Slave')
             return -1
@@ -143,6 +135,7 @@ class VFD_F800():
                 return decode(res.registers)
             else:
                 print(res)
+                return -1
         else:
             print('Cannot connect to the Modbus Server/Slave')
             return -1
@@ -159,6 +152,7 @@ class VFD_F800():
                 return decode(res.registers)
             else:
                 print(res)
+                return -1
         else:
             print('Cannot connect to the Modbus Server/Slave')
             return -1
@@ -175,6 +169,7 @@ class VFD_F800():
                 return decode(res.registers)
             else:
                 print(res)
+                return -1
         else:
             print('Cannot connect to the Modbus Server/Slave')
             return -1
@@ -188,6 +183,7 @@ class VFD_F800():
                 return Fault_code
             else:
                 print(response)
+                return -1
         else:
             print('Cannot connect to the Modbus Server/Slave')
             return -1
@@ -203,6 +199,6 @@ class VFD_F800():
             return -1
 
 
-vfd = VFD_F800(port= 'COM13', baudrate= 9600, slaveAddress= 6)
+#vfd = VFD_F800(port= 'COM13', baudrate= 9600, slaveAddress= 6)
 
-vfd.readOutputPower(Print= True)
+#vfd.readOutputPower(Print= True)

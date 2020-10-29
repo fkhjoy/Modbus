@@ -10,24 +10,11 @@ def decode(lst):
 
 class EnergyMeter_DZS100():
     
-    def __init__(self, method='rtu', port='/dev/ttyUSB0', baudrate=9600, timeout=3, parity='E', stopbits=1, bytesize=8, slaveAddress = 0):
-        self.method = method
-        self.port = port
-        self.baudrate = baudrate
-        self.timeout = timeout
-        self.parity = parity
-        self.stopbits = stopbits
-        self.bytesize = bytesize
+    def __init__(self, client, slaveAddress = 0):
+        
         self.slaveAddress = slaveAddress
-        self.client = ModbusSerialClient(
-            method = self.method,
-            port = self.port, #'/dev/ttyUSB0', #'COM9',
-            baudrate = self.baudrate,
-            timeout = self.timeout,
-            parity = self.parity,
-            stopbits = self.stopbits,
-            bytesize = self.bytesize
-        )
+        self.client = client
+
     def get_Address(self, address):
         self.slaveAddress = address
     
@@ -178,24 +165,11 @@ class EnergyMeter_DZS100():
 
 class EnergyMeter_DZS500():
     
-    def __init__(self, method='rtu', port='/dev/ttyUSB0', baudrate=9600, timeout=3, parity='E', stopbits=1, bytesize=8, slaveAddress = 2):
-        self.method = method
-        self.port = port
-        self.baudrate = baudrate
-        self.timeout = timeout
-        self.parity = parity
-        self.stopbits = stopbits
-        self.bytesize = bytesize
+    def __init__(self, client, slaveAddress = 2):
+        
         self.slaveAddress = slaveAddress
-        self.client = ModbusSerialClient(
-            method = self.method,
-            port = self.port, #'/dev/ttyUSB0', #'COM9',
-            baudrate = self.baudrate,
-            timeout = self.timeout,
-            parity = self.parity,
-            stopbits = self.stopbits,
-            bytesize = self.bytesize
-        )
+        self.client = client
+        
     def get_Address(self, address):
         self.slaveAddress = address
         
@@ -311,7 +285,7 @@ class EnergyMeter_DZS500():
                 addr = 42
         if addr == None:
             print("Invalid input")
-            return
+            return -1
    
         if self.client.connect():
             print("Connected to the Modbus Server/Slave")
@@ -355,6 +329,7 @@ class EnergyMeter_DZS500():
                     print(response)
             else:
                 print(response)
+                return -1
         else:
             print('Cannot connect to the Modbus Server/Slave')
             return -1
@@ -402,9 +377,9 @@ class EnergyMeter_DZS500():
             
     
         
-dzs500 = EnergyMeter_DZS500( port='COM12', baudrate=9600, slaveAddress= 2)
+#dzs500 = EnergyMeter_DZS500( port='COM12', baudrate=9600, slaveAddress= 2)
 
-dzs500.readVoltage(phase= "A", Print= True)
+#dzs500.readVoltage(phase= "A", Print= True)
 
 #dzs500.changeBaudrate(baudrate= 9600)
 #dzs100 = EnergyMeter_DZS100(port= 'COM12', baudrate= 2400, slaveAddress= 5)

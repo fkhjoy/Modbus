@@ -22,14 +22,24 @@ from AMR import AMR
 # class for all the devices in the SCADA
 
 class SCADA_Devices():
-    def __init__(self, port = '/dev/ttyUSB0', vfd_slaveAddress = 0,
-    energy_meter_slaveAddress = 2, level_transmitter_slaveAddress = 1, 
-    amr_mode = 'BCM', amr_pin = 23, amr_flow_per_pulse = 10, amr_past_water_flow = 100000):
+    def __init__(self, port = '/dev/ttyUSB0', method='rtu', port='/dev/ttyUSB0', baudrate=9600, timeout=3, 
+        parity='E', stopbits=1, bytesize=8, vfd_slaveAddress = 0, energy_meter_slaveAddress = 2, 
+        level_transmitter_slaveAddress = 1, amr_mode = 'BCM', amr_pin = 23, amr_flow_per_pulse = 10, amr_past_water_flow = 100000):
         self.ID = 1500
         self.port = port
-        self.VFD = VFD_F800(port= port, slaveAddress= vfd_slaveAddress)
-        self.Level_Transmitter = AR6451(port= port, slaveAddress= level_transmitter_slaveAddress)
-        self.Energy_Meter = EnergyMeter_DZS500(port= port, slaveAddress= energy_meter_slaveAddress)
+        self.client = ModbusSerialClient(
+            method = self.method,
+            port = self.port, #'/dev/ttyUSB0', #'COM9',
+            baudrate = self.baudrate,
+            timeout = self.timeout,
+            parity = self.parity,
+            stopbits = self.stopbits,
+            bytesize = self.bytesize
+        )
+
+        self.VFD = VFD_F800(client = self.client, slaveAddress= vfd_slaveAddress)
+        self.Level_Transmitter = AR6451(client = self.client, slaveAddress= level_transmitter_slaveAddress)
+        self.Energy_Meter = EnergyMeter_DZS500(client = self.client, slaveAddress= energy_meter_slaveAddress)
         self.AMR = AMR(mode= amr_mode, pin= amr_pin, flow_per_pulse= amr_flow_per_pulse, past_water_flow= amr_past_water_flow)
         self.SCADA_Data = {
                 "ID":1500,
