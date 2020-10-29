@@ -30,6 +30,7 @@ class Modbus_Device():
 
     def readRegister(self, function_Code = 3, register = 0, count = 1, Print = True):
         if self.client.connect():
+            print('Client connected')
             if function_Code == 1:
                 response = self.client.read_coils(address = register, count = count, unit = self.slaveAddress)
                 
@@ -47,6 +48,7 @@ class Modbus_Device():
                 else:
                     print(response)
             if function_Code == 3:
+                print('Reading holding regisster')
                 response = self.client.read_holding_registers(address = register, count = count, unit = self.slaveAddress)
                 
                 if not response.isError():
@@ -92,10 +94,13 @@ class Modbus_Device():
 
 # dzs500.readRegister(register= 30)
 
-level_sensor = Modbus_Device(port= 'COM9', slaveAddress= 1, parity= 'N')
-#level_sensor.writeRegister(register= 2, value= 3)
+# level_sensor = Modbus_Device(port= 'COM9', slaveAddress= 1, parity= 'N')
+# #level_sensor.writeRegister(register= 2, value= 3)
 
-P = level_sensor.readRegister(register= 4)
+# P = level_sensor.readRegister(register= 4)
 
-water_level = 107.143*(P/1000 - 1.058) + 22
-print("Water level", "{:.2f}".format(water_level), "cm")
+# water_level = 107.143*(P/1000 - 1.058) + 22
+# print("Water level", "{:.2f}".format(water_level), "cm")
+
+vfd = Modbus_Device(port= 'COM10', slaveAddress= 6)
+vfd.readRegister(register= 0, Print= True)

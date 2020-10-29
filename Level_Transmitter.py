@@ -31,7 +31,9 @@ class AR6451():
             stopbits = self.stopbits,
             bytesize = self.bytesize
         )
-    
+    def get_Address(self, address):
+        self.slaveAddress = address
+
     def readRegister(self, address = 0, Print = True):
         if self.client.connect():
             response = self.client.read_holding_registers(address = address, unit = self.slaveAddress)
@@ -43,6 +45,7 @@ class AR6451():
                 print(response)
         else:
             print("Cannot connect to slave")
+            return -1
     
     def fitLine(self, Points):
         x = Points[0]
@@ -65,6 +68,5 @@ class AR6451():
             pressure = self.Pressure(Print = Print)
             return (self.m*pressure + self.b)*2.54
 
-level_sensor = AR6451()
+# level_sensor = AR6451()
 
-p = level_sensor.Pressure(Print = False)
