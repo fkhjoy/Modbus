@@ -5,6 +5,8 @@ This code will run in Rasspberry Pi. The code will do the following,
     3. Subscribe to that unique topic and receive commands
     4. Take actions according to those commands
 '''
+#! /usr/bin/env python
+
 import paho.mqtt.client as mqtt
 import time
 from datetime import datetime
@@ -94,36 +96,65 @@ class SCADA_Devices():
         self.updateParameters()
         return self.SCADA_Data[type][parameter]
 
-    def updateParameters(self, Print = False):
+    def updateParameters(self, Print = False, random = False):
         self.SCADA_Data["ID"] = self.ID
         self.SCADA_Data["Time_Stamp"] = self.makeTimeStamp()
 
-        self.SCADA_Data["Energy"]["Phase_A_Voltage"] = self.Energy_Meter.readVoltage(phase= 'A', Print = Print)
-        self.SCADA_Data["Energy"]["Phase_B_Voltage"] = self.Energy_Meter.readVoltage(phase= 'B', Print = Print)
-        self.SCADA_Data["Energy"]["Phase_C_Voltage"] = self.Energy_Meter.readVoltage(phase= 'C', Print = Print)
-        self.SCADA_Data["Energy"]["Line_AB_Voltage"] = self.Energy_Meter.readVoltage(line= 'AB', Print = Print)
-        self.SCADA_Data["Energy"]["Line_BC_Voltage"] = self.Energy_Meter.readVoltage(line= 'BC', Print = Print)
-        self.SCADA_Data["Energy"]["Line_CA_Voltage"] = self.Energy_Meter.readVoltage(line= 'CA', Print = Print)
-        self.SCADA_Data["Energy"]["Phase_A_Current"] = self.VFD.readOutputPower(Print = Print)/self.Energy_Meter.readVoltage(phase= 'A', Print = Print)
-        self.SCADA_Data["Energy"]["Phase_B_Current"] = self.VFD.readOutputPower(Print = Print)/self.Energy_Meter.readVoltage(phase= 'B', Print = Print)
-        self.SCADA_Data["Energy"]["Phase_C_Current"] = self.VFD.readOutputPower(Print = Print)/self.Energy_Meter.readVoltage(phase= 'C', Print = Print)
-        self.SCADA_Data["Energy"]["Active_Power"] = self.VFD.readOutputPower(Print = Print)
-        self.SCADA_Data["Energy"]["Power_Factor"] = self.VFD.readOutputPower(Print = Print)/self.VFD.readInputPower(Print = Print)
-        self.SCADA_Data["Energy"]["Load"] = (self.SCADA_Data["Energy"]["Active_Power"]**2 - self.SCADA_Data["Energy"]["Power_Factor"]**2)**0.5
-        
-        if self.SCADA_Data["Energy"]["Load"] != 0:
-            self.SCADA_Data["VFD"]["VFD_Status"] = 1
-        else:
-            self.SCADA_Data["VFD"]["VFD_Status"] = 0
-        self.SCADA_Data["VFD"]["Frequency"] = self.VFD.readOutputFrequency(Print= Print)
-        self.SCADA_Data["VFD"]["Motor_Operating_Voltage"] = self.VFD.readOutputVoltage(Print= Print)
-        self.SCADA_Data["VFD"]["Motor_Operating_Current"] = self.VFD.readOutputCurrent(Print= Print)
-        self.SCADA_Data["VFD"]["RPM"] = self.VFD.readRunningSpeed(Print= Print)
+        if not random:
+            self.SCADA_Data["Energy"]["Phase_A_Voltage"] = self.Energy_Meter.readVoltage(phase= 'A', Print = Print)
+            self.SCADA_Data["Energy"]["Phase_B_Voltage"] = self.Energy_Meter.readVoltage(phase= 'B', Print = Print)
+            self.SCADA_Data["Energy"]["Phase_C_Voltage"] = self.Energy_Meter.readVoltage(phase= 'C', Print = Print)
+            self.SCADA_Data["Energy"]["Line_AB_Voltage"] = self.Energy_Meter.readVoltage(line= 'AB', Print = Print)
+            self.SCADA_Data["Energy"]["Line_BC_Voltage"] = self.Energy_Meter.readVoltage(line= 'BC', Print = Print)
+            self.SCADA_Data["Energy"]["Line_CA_Voltage"] = self.Energy_Meter.readVoltage(line= 'CA', Print = Print)
+            self.SCADA_Data["Energy"]["Phase_A_Current"] = self.VFD.readOutputPower(Print = Print)/self.Energy_Meter.readVoltage(phase= 'A', Print = Print)
+            self.SCADA_Data["Energy"]["Phase_B_Current"] = self.VFD.readOutputPower(Print = Print)/self.Energy_Meter.readVoltage(phase= 'B', Print = Print)
+            self.SCADA_Data["Energy"]["Phase_C_Current"] = self.VFD.readOutputPower(Print = Print)/self.Energy_Meter.readVoltage(phase= 'C', Print = Print)
+            self.SCADA_Data["Energy"]["Active_Power"] = self.VFD.readOutputPower(Print = Print)
+            self.SCADA_Data["Energy"]["Power_Factor"] = self.VFD.readOutputPower(Print = Print)/self.VFD.readInputPower(Print = Print)
+            self.SCADA_Data["Energy"]["Load"] = (self.SCADA_Data["Energy"]["Active_Power"]**2 - self.SCADA_Data["Energy"]["Power_Factor"]**2)**0.5
+            
+            if self.SCADA_Data["Energy"]["Load"] != 0:
+                self.SCADA_Data["VFD"]["VFD_Status"] = 1
+            else:
+                self.SCADA_Data["VFD"]["VFD_Status"] = 0
+            self.SCADA_Data["VFD"]["Frequency"] = self.VFD.readOutputFrequency(Print= Print)
+            self.SCADA_Data["VFD"]["Motor_Operating_Voltage"] = self.VFD.readOutputVoltage(Print= Print)
+            self.SCADA_Data["VFD"]["Motor_Operating_Current"] = self.VFD.readOutputCurrent(Print= Print)
+            self.SCADA_Data["VFD"]["RPM"] = self.VFD.readRunningSpeed(Print= Print)
 
-        self.SCADA_Data["Water_Data"]["Water_Flow"] = self.AMR.flow_rate()
-        self.SCADA_Data["Water_Data"]["Water_Pressure"] = 341 # random value
-        self.SCADA_Data["Water_Data"]["Water_Meter_Reading"] = self.AMR.total_water_passed()
-        self.SCADA_Data["Water_Data"]["Water_Level"] = self.Level_Transmitter.Water_Level(Print= Print)
+            self.SCADA_Data["Water_Data"]["Water_Flow"] = self.AMR.flow_rate()
+            self.SCADA_Data["Water_Data"]["Water_Pressure"] = 341 # random value
+            self.SCADA_Data["Water_Data"]["Water_Meter_Reading"] = self.AMR.total_water_passed()
+            self.SCADA_Data["Water_Data"]["Water_Level"] = self.Level_Transmitter.Water_Level(Print= Print)
+        else:
+            self.SCADA_Data["Energy"]["Phase_A_Voltage"] = self.Energy_Meter.readVoltage(phase= 'A', Print = Print)
+            self.SCADA_Data["Energy"]["Phase_B_Voltage"] = self.Energy_Meter.readVoltage(phase= 'B', Print = Print)
+            self.SCADA_Data["Energy"]["Phase_C_Voltage"] = self.Energy_Meter.readVoltage(phase= 'C', Print = Print)
+            self.SCADA_Data["Energy"]["Line_AB_Voltage"] = self.Energy_Meter.readVoltage(line= 'AB', Print = Print)
+            self.SCADA_Data["Energy"]["Line_BC_Voltage"] = self.Energy_Meter.readVoltage(line= 'BC', Print = Print)
+            self.SCADA_Data["Energy"]["Line_CA_Voltage"] = self.Energy_Meter.readVoltage(line= 'CA', Print = Print)
+            self.SCADA_Data["Energy"]["Active_Power"] = 30 + randint(-50, 50)/10
+            self.SCADA_Data["Energy"]["Phase_A_Current"] = self.SCADA_Data["Energy"]["Active_Power"]*1000/self.Energy_Meter.readVoltage(phase= 'A', Print = Print)
+            self.SCADA_Data["Energy"]["Phase_B_Current"] = self.SCADA_Data["Energy"]["Active_Power"]*1000/self.Energy_Meter.readVoltage(phase= 'B', Print = Print)
+            self.SCADA_Data["Energy"]["Phase_C_Current"] = self.SCADA_Data["Energy"]["Active_Power"]*1000/self.Energy_Meter.readVoltage(phase= 'C', Print = Print)
+            
+            self.SCADA_Data["Energy"]["Power_Factor"] = 0.45 + randint(-2, 2)/10
+            self.SCADA_Data["Energy"]["Load"] = (self.SCADA_Data["Energy"]["Active_Power"]**2 - self.SCADA_Data["Energy"]["Power_Factor"]**2)**0.5
+            
+            if self.SCADA_Data["Energy"]["Load"] != 0:
+                self.SCADA_Data["VFD"]["VFD_Status"] = 1
+            else:
+                self.SCADA_Data["VFD"]["VFD_Status"] = 0
+            self.SCADA_Data["VFD"]["Frequency"] = 50
+            self.SCADA_Data["VFD"]["Motor_Operating_Voltage"] = self.SCADA_Data["Energy"]["Line_AB_Voltage"]
+            self.SCADA_Data["VFD"]["Motor_Operating_Current"] = self.SCADA_Data["Energy"]["Phase_A_Current"]
+            self.SCADA_Data["VFD"]["RPM"] = 2100
+
+            self.SCADA_Data["Water_Data"]["Water_Flow"] = 1000
+            self.SCADA_Data["Water_Data"]["Water_Pressure"] = 341 # random value
+            self.SCADA_Data["Water_Data"]["Water_Meter_Reading"] += self.SCADA_Data["Water_Data"]["Water_Flow"]
+            self.SCADA_Data["Water_Data"]["Water_Level"] = 25
 
         return json.dumps(self.SCADA_Data)
 
@@ -157,7 +188,7 @@ client.subscribe(Sub_Topic)
 while True:
     time.sleep(10)
     client.loop()
-    SCADA_Data_Json = SCADA.updateParameters()
+    SCADA_Data_Json = SCADA.updateParameters(random = True)
     client.publish(Pub_Topic, SCADA_Data_Json)
 
     if prev_Message != Message:

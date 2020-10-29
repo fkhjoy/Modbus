@@ -383,9 +383,9 @@ class EnergyMeter_DZS500():
             
     
         
-# dzs500 = EnergyMeter_DZS500( port='COM12', baudrate=9600, slaveAddress= 2)
+dzs500 = EnergyMeter_DZS500( port='COM12', baudrate=9600, slaveAddress= 2)
 
-#dzs500.readVoltage(phase= "A", Print= True)
+dzs500.readVoltage(phase= "A", Print= True)
 
 #dzs500.changeBaudrate(baudrate= 9600)
 #dzs100 = EnergyMeter_DZS100(port= 'COM12', baudrate= 2400, slaveAddress= 5)
