@@ -112,11 +112,6 @@ class AMR():
         self.prev_pulse_count = 0
 
 
-
-amr = AMR()
-print(amr.total_water_passed())
-amr.get_past_water_flow(10)
-print(amr.total_water_passed())
 '''
 while True:  
     time.sleep(30)
