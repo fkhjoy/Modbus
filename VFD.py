@@ -203,5 +203,6 @@ class VFD_F800():
             return -1
 
 
-# vfd = VFD_F800(port= 'COM9')
-# vfd.readOutputFrequency(Print= True)
+vfd = VFD_F800(port= 'COM13', baudrate= 9600, slaveAddress= 6)
+
+vfd.readOutputPower(Print= True)
