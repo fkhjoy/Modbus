@@ -17,7 +17,7 @@ class AMR():
         # w = create a file for writing, if it's not already there
         # + = both read nad write
         self.file = open('Water_Passed.txt', 'w+') 
-        self.file.write(self.past_water_flow)
+        self.file.write(str(self.past_water_flow))
         self.file.close()
         # pin numbering mode.
         # 'BCM' means using GPIO numbering
@@ -41,6 +41,7 @@ class AMR():
         # All parameters are converted to the standard unit
         self.units = {'min' : 60, 'second' : 1, 'hour' : 3600, 'day' : 24*3600, 'L' : 1000, 'cm' : 1}
         
+        
         if self.mode == 'BCM':
             GPIO.setmode(GPIO.BCM)
         elif self.mode == 'BOARD':
@@ -53,7 +54,7 @@ class AMR():
         GPIO.setup(self.pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
         # Adding Interrupt callback function
         GPIO.add_event_detect(self.pin, GPIO.FALLING, callback = self.pulse_counter, bouncetime = 200)
-
+        
     def pulse_counter(self, channel):
         self.pulse_count += 1
         print(self.pulse_count)
@@ -70,7 +71,7 @@ class AMR():
     def get_past_water_flow(self, past_water_flow):
         self.past_water_flow = past_water_flow
         self.file = open('Water_Passed.txt', 'w+') 
-        self.file.write(self.past_water_flow)
+        self.file.write(str(self.past_water_flow))
         self.file.close()
     
     def print_current_count(self):
@@ -78,7 +79,7 @@ class AMR():
 
     def total_water_passed(self):
         self.file = open('Water_Passed.txt', 'r') 
-        self.past_water_flow = self.file.read()
+        self.past_water_flow = int(self.file.read())
         self.file.close()
         total_water = self.past_water_flow + self.pulse_count*self.flow_per_pulse
         return total_water*self.units[self.flow_unit]
@@ -110,9 +111,13 @@ class AMR():
         self.pulse_count = 0
         self.prev_pulse_count = 0
 
-'''
-amr = AMR()
 
+
+amr = AMR()
+print(amr.total_water_passed())
+amr.get_past_water_flow(10)
+print(amr.total_water_passed())
+'''
 while True:  
     time.sleep(30)
     amr.convertTo(flow_unit= 'L', time_unit = 'min')

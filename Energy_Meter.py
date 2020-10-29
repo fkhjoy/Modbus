@@ -43,6 +43,7 @@ class EnergyMeter_DZS100():
                 return decode(res.registers)
             else:
                 print(res)
+                return -1
         else:
             print('Cannot connect to the Modbus Server/Slave')
             return -1
@@ -58,6 +59,7 @@ class EnergyMeter_DZS100():
                 return decode(res.registers)
             else:
                 print(res)
+                return -1
         else:
             print('Cannot connect to the Modbus Server/Slave')
             return -1
@@ -75,6 +77,7 @@ class EnergyMeter_DZS100():
                 return decode(res.registers)
             else:
                 print(res)
+                return -1
         else:
             print('Cannot connect to the Modbus Server/Slave')
             return -1
@@ -89,9 +92,10 @@ class EnergyMeter_DZS100():
             if not res.isError():
                 if Print:
                     print(decode(res.registers))
-                return decode(res.registers)
+                return decode(res.registers)/10
             else:
                 print(res)
+                return -1
         else:
             print('Cannot connect to the Modbus Server/Slave')
             return -1
@@ -106,9 +110,10 @@ class EnergyMeter_DZS100():
             if not res.isError():
                 if Print:
                     print(decode(res.registers))
-                return decode(res.registers)
+                return decode(res.registers)/1000
             else:
                 print(res)
+                return -1
         else:
             print('Cannot connect to the Modbus Server/Slave')
             return -1
@@ -123,9 +128,10 @@ class EnergyMeter_DZS100():
             if not res.isError():
                 if Print:
                     print(decode(res.registers))
-                return decode(res.registers)
+                return decode(res.registers)/10000
             else:
                 print(res)
+                return -1
         else:
             print('Cannot connect to the Modbus Server/Slave')
             return -1
@@ -138,10 +144,13 @@ class EnergyMeter_DZS100():
             res = self.client.read_holding_registers(address=11, count=1, unit = self.slaveAddress)
             
             if not res.isError():
-                print(decode(res.registers))
-                return decode(res.registers)
+                if Print:
+                    print(decode(res.registers))
+
+                return decode(res.registers)/1000
             else:
                 print(res)
+                return -1
         else:
             print('Cannot connect to the Modbus Server/Slave')
             return -1
@@ -156,9 +165,10 @@ class EnergyMeter_DZS100():
             if not res.isError():
                 if Print:
                     print(decode(res.registers))
-                return decode(res.registers)
+                return decode(res.registers)/100
             else:
                 print(res)
+                return -1
         else:
             print('Cannot connect to the Modbus Server/Slave')
             return -1
@@ -214,9 +224,10 @@ class EnergyMeter_DZS500():
             if not res.isError():
                 if Print:
                     print(decode(res.registers))
-                return decode(res.registers)
+                return decode(res.registers)/1000
             else:
                 print(res)
+                return -1
         else:
             print('Cannot connect to the Modbus Server/Slave')
             return -1
@@ -248,9 +259,10 @@ class EnergyMeter_DZS500():
             if not res.isError():
                 if Print:
                     print(decode(res.registers))
-                return decode(res.registers)
+                return decode(res.registers)/10
             else:
                 print(res)
+                return -1
         else:
             print('Cannot connect to the Modbus Server/Slave')
             return -1
@@ -309,9 +321,14 @@ class EnergyMeter_DZS500():
             if not res.isError():
                 if Print:
                     print(decode(res.registers))
-                return decode(res.registers)
+
+                if category == 'factor':
+                    return decode(res.registers)/1000
+                else:
+                    return decode(res.registers)/10000
             else:
                 print(res)
+                return -1
         else:
             print('Cannot connect to the Modbus Server/Slave')
             return -1
@@ -325,6 +342,7 @@ class EnergyMeter_DZS500():
                 return decode(response.registers)
             else:
                 print(response)
+                return -1
         else:
             print('Cannot connect to the Modbus Server/Slave')
             return -1
@@ -377,6 +395,7 @@ class EnergyMeter_DZS500():
             unit = self.slaveAddress)
             if Print:
                 print(response)
+                return -1
         else:
             print('Cannot connect to the Modbus Server/Slave')
             return -1
@@ -396,12 +415,8 @@ dzs500.readVoltage(phase= "A", Print= True)
 # power = dzs100.readActivePower(Print= True)
 # pf = dzs100.readPowerFactor(Print= True)
 
-# print("Voltage:", voltage/10, "V")
-# print("Current:", current/1000, "A")
-# print("Power:", power/10000, "kW")
-# print("Power Factor", pf/1000)
-# print("Frequency:", frequency/100, "Hz")
-        
-            
-            
-        
+# print("Voltage:", voltage, "V")
+# print("Current:", current, "A")
+# print("Power:", power, "kW")
+# print("Power Factor", pf)
+# print("Frequency:", frequency, "Hz")
