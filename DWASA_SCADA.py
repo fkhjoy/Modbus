@@ -5,6 +5,8 @@ This code will run in Rasspberry Pi. The code will do the following,
     3. Subscribe to that unique topic and receive commands
     4. Take actions according to those commands
 '''
+#! /usr/bin/env python
+
 import paho.mqtt.client as mqtt
 import time
 from datetime import datetime
