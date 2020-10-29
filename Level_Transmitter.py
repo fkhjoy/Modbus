@@ -10,28 +10,15 @@ def decode(lst):
     return int(s,0)
 
 class AR6451():
-    def __init__(self, method='rtu', port='COM9', baudrate=9600, timeout=3, parity='N', stopbits=1, 
-    bytesize=8, slaveAddress = 1, m = 107.143, b = -91.36):
-        self.method = method
-        self.port = port
-        self.baudrate = baudrate
-        self.timeout = timeout
-        self.parity = parity
-        self.stopbits = stopbits
-        self.bytesize = bytesize
+    def __init__(self, client, slaveAddress = 1, m = 107.143, b = -91.36):
+        
         self.slaveAddress = slaveAddress
         self.m = m
         self.b = b
-        self.client = ModbusSerialClient(
-            method = self.method,
-            port = self.port,
-            baudrate = self.baudrate,
-            timeout = self.timeout,
-            parity = self.parity,
-            stopbits = self.stopbits,
-            bytesize = self.bytesize
-        )
+        self.client = client
+
     def get_Address(self, address):
+        
         self.slaveAddress = address
 
     def readRegister(self, address = 0, Print = True):
