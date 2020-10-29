@@ -13,6 +13,12 @@ class AMR():
         self.flow_per_pulse = flow_per_pulse
         # Water already passed
         self.past_water_flow = past_water_flow
+        # Make a file for saving past water
+        # w = create a file for writing, if it's not already there
+        # + = both read nad write
+        self.file = open('Water_Passed.txt', 'w+') 
+        self.file.write(self.past_water_flow)
+        self.file.close()
         # pin numbering mode.
         # 'BCM' means using GPIO numbering
         # 'BOARD' means using pin numbering with respect to the board
@@ -63,11 +69,17 @@ class AMR():
     
     def get_past_water_flow(self, past_water_flow):
         self.past_water_flow = past_water_flow
+        self.file = open('Water_Passed.txt', 'w+') 
+        self.file.write(self.past_water_flow)
+        self.file.close()
     
     def print_current_count(self):
         print(self.pulse_count)
 
     def total_water_passed(self):
+        self.file = open('Water_Passed.txt', 'r') 
+        self.past_water_flow = self.file.read()
+        self.file.close()
         total_water = self.past_water_flow + self.pulse_count*self.flow_per_pulse
         return total_water*self.units[self.flow_unit]
     
