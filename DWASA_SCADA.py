@@ -7,6 +7,9 @@ This code will run in Rasspberry Pi. The code will do the following,
 '''
 #! /usr/bin/env python
 
+# pylint: disable=unused-variable
+# pylint: enable=too-many-lines
+
 import paho.mqtt.client as mqtt
 import time
 from datetime import datetime
