@@ -24,7 +24,12 @@ class SCADA_Devices():
     def __init__(self, port = '/dev/ttyUSB0', method='rtu', baudrate=9600, timeout=3, 
         parity='E', stopbits=1, bytesize=8, vfd_slaveAddress = 0, energy_meter_slaveAddress = 3, 
         level_transmitter_slaveAddress = 2, amr_mode = 'BCM', amr_pin = 23, amr_flow_per_pulse = 10, amr_past_water_flow = 100000):
-        self.ID = 1500
+        
+        #Read ID from file
+        self.ID_file = open('ID.txt', 'r') 
+        self.ID = int(self.ID_file.read())
+        self.ID_file.close()
+        
         self.port = port
         self.method = method
         self.baudrate = baudrate
@@ -122,6 +127,9 @@ class SCADA_Devices():
     def connect(self):
         self.mqtt_client.connect(self.MQTT_Address(), self.MQTT_Port())
     
+    def disconnect(self):
+        self.mqtt_client.disconnect()
+    
     def subscribe(self, topic = None):
         if topic == None:
             self.mqtt_client.subscribe(self.mqtt_sub_topic)
@@ -141,6 +149,9 @@ class SCADA_Devices():
 
     def get_ID(self, ID):
         self.ID = ID
+        self.ID_file = open('ID.txt', 'w+')
+        self.ID_file.write(str(ID))
+        self.ID_file.close()
 
     def get_VFD_Address(self, address = 0):
         self.VFD.get_Address(address= address)
@@ -168,9 +179,43 @@ class SCADA_Devices():
         self.formatted_date_time = now.strftime("%Y-%m-%d %H:%M:%S")
         return self.formatted_date_time
     
-    def query(self, type, parameter):
+    def parameterQuery(self, type = '', parameter = None): # returns parameters
         self.updateParameters()
-        return self.SCADA_Data[type][parameter]
+
+        if len(type) > 0:
+            return self.SCADA_Data[type][parameter]
+        else:
+            return self.SCADA_Data[parameter]
+    
+    def is_json(self, myjson):
+        try:
+            json_object = json.loads(myjson)
+        except ValueError as e:
+            return False
+        return True
+
+    def executeCommand(self, json_command):
+        if self.is_json(json_command):
+            command = json.loads(json_command)
+        else:
+            self.mqtt_client.publish(self.mqtt_pub_topic, "Wrong json format")
+            return 0
+
+        if command["Command"] == "Query":
+            self.mqtt_client.publish(self.mqtt_pub_topic, self.parameterQuery(command["Type"], command["Parameter"]))
+        elif command["Command"] == "Change_ID":
+            self.get_ID(command["ID"])
+            self.publish(self.mqtt_pub_topic, "New ID set successfully!")
+        elif command["Command"] == "Change_MQTT_Data":
+            self.get_MQTT_Connection_Data(command["Address"], command["Port"])
+            self.publish(self.mqtt_pub_topic, "New MQTT data set successfully!")
+            self.disconnect() # disconnect from previous IP
+            self.connect() # connect to new IP
+            self.subscribe(self.mqtt_sub_topic)
+        else:
+            self.publish(self.mqtt_pub_topic, "Error in command")
+            
+
 
     def updateParameters(self, Print = False, random = False):
         self.SCADA_Data["ID"] = self.ID
@@ -263,6 +308,7 @@ while True:
     
     if SCADA.is_New_Command():
         print(SCADA.command)
+        SCADA.executeCommand(SCADA.command)
 
     else:
         continue
