@@ -21,8 +21,7 @@ from pymodbus.client.sync import ModbusSerialClient
 from subprocess import call
 
 # calls an echo in the terminal
-call(['DWASA_SCADA.py running'], shell=True)
-
+#call(['DWASA_SCADA.py running'], shell=True)
 # class for all the devices in the SCADA
 
 class SCADA_Devices():
