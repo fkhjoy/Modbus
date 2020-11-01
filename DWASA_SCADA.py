@@ -208,7 +208,7 @@ client.subscribe(Sub_Topic)
 while True:
     time.sleep(10)
     client.loop()
-    SCADA_Data_Json = SCADA.updateParameters()
+    SCADA_Data_Json = SCADA.updateParameters(random= True)
     client.publish(Pub_Topic, SCADA_Data_Json)
 
     if prev_Message != Message:
