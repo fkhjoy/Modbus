@@ -23,7 +23,7 @@ from pymodbus.client.sync import ModbusSerialClient
 # class for all the devices in the SCADA
 
 class SCADA_Devices():
-    def __init__(self, port = '/dev/ttyUSB0', method='rtu', port='/dev/ttyUSB0', baudrate=9600, timeout=3, 
+    def __init__(self, port = '/dev/ttyUSB0', method='rtu', baudrate=9600, timeout=3, 
         parity='E', stopbits=1, bytesize=8, vfd_slaveAddress = 0, energy_meter_slaveAddress = 2, 
         level_transmitter_slaveAddress = 1, amr_mode = 'BCM', amr_pin = 23, amr_flow_per_pulse = 10, amr_past_water_flow = 100000):
         self.ID = 1500
