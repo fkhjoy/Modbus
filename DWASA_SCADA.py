@@ -18,7 +18,10 @@ from Level_Transmitter import AR6451
 from VFD import VFD_F800
 from AMR import AMR
 from pymodbus.client.sync import ModbusSerialClient
+from subprocess import call
 
+# calls an echo in the terminal
+call(['espeak "Welcome to the world of Robots" 2>/dev/null'], shell=True)
 
 # class for all the devices in the SCADA
 
