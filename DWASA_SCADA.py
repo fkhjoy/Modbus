@@ -18,11 +18,7 @@ from Level_Transmitter import AR6451
 from VFD import VFD_F800
 from AMR import AMR
 from pymodbus.client.sync import ModbusSerialClient
-from subprocess import call
 
-# calls an echo in the terminal
-#call(['DWASA_SCADA.py running'], shell=True)
-# class for all the devices in the SCADA
 
 class SCADA_Devices():
     def __init__(self, port = '/dev/ttyUSB0', method='rtu', baudrate=9600, timeout=3, 
@@ -82,6 +78,22 @@ class SCADA_Devices():
                 }
             }
     
+    def get_MQTT_Address(self, address):
+        self.mqtt_address = address
+
+    def get_MQTT_Port(self, port):
+        self.mqtt_port = port
+
+    def get_MQTT_Connection_Data(self, address, port):
+        self.mqtt_address = address
+        self.mqtt_port = port
+
+    def MQTT_Address(self):
+        return self.mqtt_address
+    
+    def MQTT_Port(self):
+        return self.mqtt_port
+
     def get_ID(self, ID):
         self.ID = ID
 
@@ -193,11 +205,13 @@ def on_message(client, userdata, message):
 
 broker = '123.49.33.109' #MQTT broker address
 port = 8083 #MQTT broker port
+SCADA.get_MQTT_Address(broker)
+SCADA.get_MQTT_Port(port)
 Pub_Topic = 'scada_test' # Topic to publish
 Sub_Topic = 'DMA/Sub/SCADA' # Topic to subscribe
 
 client = mqtt.Client(transport= 'websockets')
-client.connect(broker, port)
+client.connect(SCADA.MQTT_Address(), SCADA.MQTT_Port())
 client.on_message = on_message
 
 print("Subscribing to topic",Sub_Topic)
