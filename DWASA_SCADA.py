@@ -34,7 +34,7 @@ class SCADA_Devices():
         self.bytesize = bytesize
         self.client = ModbusSerialClient(
             method = self.method,
-            port = self.port, #'/dev/ttyUSB0', #'COM9',
+            port = self.port,
             baudrate = self.baudrate,
             timeout = self.timeout,
             parity = self.parity,
