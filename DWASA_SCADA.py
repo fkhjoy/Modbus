@@ -226,6 +226,12 @@ class SCADA_Devices():
             #self.disconnect() # disconnect from previous IP
             self.connect() # connect to new IP
             #self.subscribe(self.mqtt_sub_topic)
+        elif command["Command"] == "Change_Topic":
+            self.mqtt_client.unsubscribe(self.mqtt_sub_topic)
+            self.mqtt_pub_topic = command["Pub_Topic"]
+            self.mqtt_sub_topic = command["Sub_Topic"]
+            self.mqtt_client.subscribe(self.mqtt_sub_topic)
+            
         else:
             self.publish(self.mqtt_pub_topic, "Error in command")
             
