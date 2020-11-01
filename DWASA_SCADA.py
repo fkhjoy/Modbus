@@ -16,7 +16,7 @@ from random import randint
 from Energy_Meter import EnergyMeter_DZS500
 from Level_Transmitter import AR6451
 from VFD import VFD_F800
-from AMR import AMR
+#from AMR import AMR
 from pymodbus.client.sync import ModbusSerialClient
 
 
@@ -45,7 +45,15 @@ class SCADA_Devices():
         self.VFD = VFD_F800(client = self.client, slaveAddress= vfd_slaveAddress)
         self.Level_Transmitter = AR6451(client = self.client, slaveAddress= level_transmitter_slaveAddress)
         self.Energy_Meter = EnergyMeter_DZS500(client = self.client, slaveAddress= energy_meter_slaveAddress)
-        self.AMR = AMR(mode= amr_mode, pin= amr_pin, flow_per_pulse= amr_flow_per_pulse, past_water_flow= amr_past_water_flow)
+        #self.AMR = AMR(mode= amr_mode, pin= amr_pin, flow_per_pulse= amr_flow_per_pulse, past_water_flow= amr_past_water_flow)
+        
+        self.mqtt_client = mqtt.Client('Client')#transport= 'websockets')
+        self.mqtt_client.on_message = self.on_message
+        self.command = ''
+        self.last_command = ''
+        self.mqtt_pub_topic = 'scada_test'
+        self.mqtt_sub_topic = 'scada_sub'
+        
         self.SCADA_Data = {
                 "ID":1500,
                 "Time_Stamp":"2019-11-06 16:04:52",
@@ -78,7 +86,7 @@ class SCADA_Devices():
                 }
             }
     
-    def get_MQTT_Address(self, address):
+    def get_MQTT_Address(self, address = '123.49.33.109'):
         self.mqtt_address = address
 
     def get_MQTT_Port(self, port):
@@ -93,6 +101,43 @@ class SCADA_Devices():
     
     def MQTT_Port(self):
         return self.mqtt_port
+    
+    def on_message(self, client, userdata, message):
+        Message = str(message.payload.decode("utf-8"))
+        self.command = Message
+        print("message received:", Message)
+    
+    def is_New_Command(self):
+        if self.last_command != self.command:
+            self.last_command = self.command
+            return True
+        return False
+    
+    def get_Sub_Topic(self, topic):
+        self.mqtt_sub_topic = topic
+    
+    def get_Pub_Topic(self, topic):
+        self.mqtt_pub_topic = topic
+
+    def connect(self):
+        self.mqtt_client.connect(self.MQTT_Address(), self.MQTT_Port())
+    
+    def subscribe(self, topic = None):
+        if topic == None:
+            self.mqtt_client.subscribe(self.mqtt_sub_topic)
+        else:
+            self.mqtt_sub_topic = topic
+            self.mqtt_client.subscribe(self.mqtt_sub_topic)
+    
+    def publish(self, topic = None, payload = ''):
+        if topic == None:
+            self.mqtt_client.publish(self.mqtt_pub_topic, payload)
+        else:
+            self.mqtt_pub_topic = topic
+            self.mqtt_client.publish(self.mqtt_pub_topic, payload)
+    
+    def loop(self):
+        self.mqtt_client.loop()
 
     def get_ID(self, ID):
         self.ID = ID
@@ -100,23 +145,23 @@ class SCADA_Devices():
     def get_VFD_Address(self, address = 0):
         self.VFD.get_Address(address= address)
     
-    def get_Energy_Meter_Address(self, address = 2):
+    def get_Energy_Meter_Address(self, address = 3):
         self.Energy_Meter.get_Address(address= address)
     
-    def get_Level_Transmitter_Address(self, address = 1):
+    def get_Level_Transmitter_Address(self, address = 2):
         self.Level_Transmitter.get_Address(address= address)
 
-    def get_AMR_Flow_Per_Pulse(self, flow_per_pulse):
-        self.AMR.get_flow_per_pulse(flow_per_pulse= flow_per_pulse)
+    # def get_AMR_Flow_Per_Pulse(self, flow_per_pulse):
+    #     self.AMR.get_flow_per_pulse(flow_per_pulse= flow_per_pulse)
     
-    def get_AMR_Flow_Unit(self, flow_unit):
-        self.AMR.get_flow_unit(flow_unit= flow_unit)
+    # def get_AMR_Flow_Unit(self, flow_unit):
+    #     self.AMR.get_flow_unit(flow_unit= flow_unit)
     
-    def get_AMR_Time_Unit(self, time_unit):
-        self.AMR.get_time_unit(time_unit= time_unit)
+    # def get_AMR_Time_Unit(self, time_unit):
+    #     self.AMR.get_time_unit(time_unit= time_unit)
 
-    def reset_Counter(self):
-        self.AMR.reset_counter()
+    # def reset_Counter(self):
+    #     self.AMR.reset_counter()
         
     def makeTimeStamp(self):
         now = datetime.now()
@@ -154,9 +199,9 @@ class SCADA_Devices():
             self.SCADA_Data["VFD"]["Motor_Operating_Current"] = self.VFD.readOutputCurrent(Print= Print)
             self.SCADA_Data["VFD"]["RPM"] = self.VFD.readRunningSpeed(Print= Print)
 
-            self.SCADA_Data["Water_Data"]["Water_Flow"] = self.AMR.flow_rate()
+            self.SCADA_Data["Water_Data"]["Water_Flow"] = 500#self.AMR.flow_rate()
             self.SCADA_Data["Water_Data"]["Water_Pressure"] = 341 # random value
-            self.SCADA_Data["Water_Data"]["Water_Meter_Reading"] = self.AMR.total_water_passed()
+            self.SCADA_Data["Water_Data"]["Water_Meter_Reading"] = 10000#self.AMR.total_water_passed()
             self.SCADA_Data["Water_Data"]["Water_Level"] = self.Level_Transmitter.Water_Level(Print= Print)
         else:
             self.SCADA_Data["Energy"]["Phase_A_Voltage"] = self.Energy_Meter.readVoltage(phase= 'A', Print = Print)
@@ -192,42 +237,32 @@ class SCADA_Devices():
 
 SCADA = SCADA_Devices()
 
-Message = "" #<String> this will store the json foramtted Messages from dashboard
-prev_Message = "" #For checking repeated comands
-
-def on_message(client, userdata, message):
-    global Message
-    Message = str(message.payload.decode("utf-8"))
-    print("message received:", Message)
-    # print("message topic=",message.topic)
-    # print("message qos=",message.qos)
-    # print("message retain flag=",message.retain)
-
-broker = '123.49.33.109' #MQTT broker address
-port = 8083 #MQTT broker port
+broker = 'broker.hivemq.com'#'123.49.33.109' #MQTT broker address
+port = 1883#8083 #MQTT broker port
 SCADA.get_MQTT_Address(broker)
 SCADA.get_MQTT_Port(port)
-Pub_Topic = 'scada_test' # Topic to publish
-Sub_Topic = 'DMA/Sub/SCADA' # Topic to subscribe
+SCADA.get_Sub_Topic('scada_test')# Topic to publish
+SCADA.get_Pub_Topic('DMA/Sub/SCADA')# Topic to subscribe
 
-client = mqtt.Client(transport= 'websockets')
-client.connect(SCADA.MQTT_Address(), SCADA.MQTT_Port())
-client.on_message = on_message
+SCADA.connect()
+SCADA.subscribe()
 
-print("Subscribing to topic",Sub_Topic)
-client.subscribe(Sub_Topic)
+delay_time = 10
 
+tic = time.time()
 
 while True:
-    time.sleep(10)
-    client.loop()
-    SCADA_Data_Json = SCADA.updateParameters(random= True)
-    client.publish(Pub_Topic, SCADA_Data_Json)
+    SCADA.loop()
+    toc = time.time()
 
-    if prev_Message != Message:
-        print(Message)
-        prev_Message = Message
-        Command = json.loads(Message)
+    if (toc - tic) >= delay_time:
+        SCADA_Data_Json = SCADA.updateParameters(random= True)
+        SCADA.publish(payload= SCADA_Data_Json)
+        tic = toc
+    
+    if SCADA.is_New_Command():
+        print(SCADA.command)
+
     else:
         continue
     
