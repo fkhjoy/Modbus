@@ -17,6 +17,7 @@ from Energy_Meter import EnergyMeter_DZS500
 from Level_Transmitter import AR6451
 from VFD import VFD_F800
 from AMR import AMR
+from pymodbus.client.sync import ModbusSerialClient
 
 
 # class for all the devices in the SCADA
@@ -27,6 +28,12 @@ class SCADA_Devices():
         level_transmitter_slaveAddress = 1, amr_mode = 'BCM', amr_pin = 23, amr_flow_per_pulse = 10, amr_past_water_flow = 100000):
         self.ID = 1500
         self.port = port
+        self.method = method
+        self.baudrate = baudrate
+        self.timeout = timeout
+        self.parity = parity
+        self.stopbits = stopbits
+        self.bytesize = bytesize
         self.client = ModbusSerialClient(
             method = self.method,
             port = self.port, #'/dev/ttyUSB0', #'COM9',
