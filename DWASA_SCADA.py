@@ -19,6 +19,7 @@ from random import randint
 from Energy_Meter import EnergyMeter_DZS500
 from Level_Transmitter import AR6451
 from VFD import VFD_F800
+import os
 #from AMR import AMR
 from pymodbus.client.sync import ModbusSerialClient
 
@@ -26,11 +27,20 @@ from pymodbus.client.sync import ModbusSerialClient
 class SCADA_Devices():
     def __init__(self, port = '/dev/ttyUSB0', method='rtu', baudrate=9600, timeout=3, 
         parity='E', stopbits=1, bytesize=8, vfd_slaveAddress = 0, energy_meter_slaveAddress = 3, 
-        level_transmitter_slaveAddress = 2, amr_mode = 'BCM', amr_pin = 23, amr_flow_per_pulse = 10, amr_past_water_flow = 100000):
+        level_transmitter_slaveAddress = 2, amr_mode = 'BCM', amr_pin = 23, amr_flow_per_pulse = 10, 
+        amr_past_water_flow = 100000, ID = None):
         
         #Read ID from file
-        self.ID_file = open('ID.txt', 'r') 
-        self.ID = int(self.ID_file.read())
+        
+        if ID != None:
+            self.ID_file = open("ID.txt", 'x')
+            self.ID_file.write(str(ID))
+        else:
+            current_folder = os.path.dirname(os.path.abspath(__file__))
+            ID_file = os.path.join(current_folder, 'ID.txt')
+            self.ID_file = open(ID_file, 'r')
+            ID = int(self.ID_file.read())
+        self.ID = ID
         self.ID_file.close()
         
         self.port = port
@@ -55,7 +65,7 @@ class SCADA_Devices():
         self.Energy_Meter = EnergyMeter_DZS500(client = self.client, slaveAddress= energy_meter_slaveAddress)
         #self.AMR = AMR(mode= amr_mode, pin= amr_pin, flow_per_pulse= amr_flow_per_pulse, past_water_flow= amr_past_water_flow)
         
-        self.mqtt_client = mqtt.Client('Client')#transport= 'websockets')
+        self.mqtt_client = mqtt.Client("Client", transport= 'websockets')
         self.mqtt_client.on_message = self.on_message
         self.command = ''
         self.last_command = ''
@@ -129,6 +139,7 @@ class SCADA_Devices():
 
     def connect(self):
         self.mqtt_client.connect(self.MQTT_Address(), self.MQTT_Port())
+
     
     def disconnect(self):
         self.mqtt_client.disconnect()
@@ -182,7 +193,7 @@ class SCADA_Devices():
         self.formatted_date_time = now.strftime("%Y-%m-%d %H:%M:%S")
         return self.formatted_date_time
     
-    def parameterQuery(self, type = '', parameter = None): # returns parameters
+    def parameterQuery(self, type = '', parameter = ''): # returns parameters
         self.updateParameters()
 
         if len(type) > 0:
@@ -205,16 +216,16 @@ class SCADA_Devices():
             return 0
 
         if command["Command"] == "Query":
-            self.mqtt_client.publish(self.mqtt_pub_topic, self.parameterQuery(command["Type"], command["Parameter"]))
+            self.mqtt_client.publish(self.mqtt_pub_topic, self.parameterQuery(type = command["Type"], parameter = command["Parameter"]))
         elif command["Command"] == "Change_ID":
             self.get_ID(command["ID"])
             self.publish(self.mqtt_pub_topic, "New ID set successfully!")
         elif command["Command"] == "Change_MQTT_Data":
             self.get_MQTT_Connection_Data(command["Address"], command["Port"])
             self.publish(self.mqtt_pub_topic, "New MQTT data set successfully!")
-            self.disconnect() # disconnect from previous IP
+            #self.disconnect() # disconnect from previous IP
             self.connect() # connect to new IP
-            self.subscribe(self.mqtt_sub_topic)
+            #self.subscribe(self.mqtt_sub_topic)
         else:
             self.publish(self.mqtt_pub_topic, "Error in command")
             
@@ -285,8 +296,8 @@ class SCADA_Devices():
 
 SCADA = SCADA_Devices()
 
-broker = 'broker.hivemq.com'#'123.49.33.109' #MQTT broker address
-port = 1883#8083 #MQTT broker port
+broker = '123.49.33.109' #MQTT broker address
+port = 8083 #MQTT broker port
 SCADA.get_MQTT_Address(broker)
 SCADA.get_MQTT_Port(port)
 SCADA.get_Sub_Topic('scada_sub')# Topic to publish
