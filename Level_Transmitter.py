@@ -31,7 +31,7 @@ class AR6451():
             else:
                 print(response)
         else:
-            print("Cannot connect to slave")
+            print("Cannot connect to Level Transmitter")
             return -1
     
     def fitLine(self, Points):

@@ -22,7 +22,7 @@ class VFD_F800():
     
     def readOutputFrequency(self, Print=False):
         if self.client.connect():
-            print("Connected to the Modbus Server/Slave")
+            print("Connected to the VFD")
             # Reading from a holding register with the below content.
             res = self.client.read_holding_registers(address=201, count=1, unit= self.slaveAddress)
             
@@ -34,12 +34,12 @@ class VFD_F800():
                 print(res)
                 return -1
         else:
-            print('Cannot connect to the Modbus Server/Slave')
+            print('Cannot connect to the VFD')
             return -1
             
     def readOutputCurrent(self, Print=False):
         if self.client.connect():
-            print("Connected to the Modbus Server/Slave")
+            print("Connected to the VFD")
             # Reading from a holding register with the below content.
             res = self.client.read_holding_registers(address=202, count=1, unit= self.slaveAddress)
             
@@ -51,12 +51,12 @@ class VFD_F800():
                 print(res)
                 return -1
         else:
-            print('Cannot connect to the Modbus Server/Slave')
+            print('Cannot connect to the VFD')
             return -1
             
     def readOutputVoltage(self, Print=False):
         if self.client.connect():
-            print("Connected to the Modbus Server/Slave")
+            print("Connected to the VFD")
             # Reading from a holding register with the below content.
             res = self.client.read_holding_registers(address=203, count=1, unit= self.slaveAddress)
             
@@ -69,12 +69,12 @@ class VFD_F800():
                 return -1
 
         else:
-            print('Cannot connect to the Modbus Server/Slave')
+            print('Cannot connect to the VFD')
             return -1
     
     def readInputPower(self, Print=False):
         if self.client.connect():
-            print("Connected to the Modbus Server/Slave")
+            print("Connected to the VFD")
             # Reading from a holding register with the below content.
             res = self.client.read_holding_registers(address=213, count=1, unit= self.slaveAddress)
             
@@ -86,12 +86,12 @@ class VFD_F800():
                 print(res)
                 return -1
         else:
-            print('Cannot connect to the Modbus Server/Slave')
+            print('Cannot connect to the VFD')
             return -1
             
     def readOutputPower(self, Print=False):
         if self.client.connect():
-            print("Connected to the Modbus Server/Slave")
+            print("Connected to the VFD")
             # Reading from a holding register with the below content.
             res = self.client.read_holding_registers(address=214, count=1, unit= self.slaveAddress)
             
@@ -103,12 +103,12 @@ class VFD_F800():
                 print(res)
                 return -1
         else:
-            print('Cannot connect to the Modbus Server/Slave')
+            print('Cannot connect to the VFD')
             return -1
     
     def readCumulativePower(self, Print=False):
         if self.client.connect():
-            print("Connected to the Modbus Server/Slave")
+            print("Connected to the VFD")
             # Reading from a holding register with the below content.
             res = self.client.read_holding_registers(address=225, count=1, unit= self.slaveAddress)
             
@@ -120,12 +120,12 @@ class VFD_F800():
                 print(res)
                 return -1
         else:
-            print('Cannot connect to the Modbus Server/Slave')
+            print('Cannot connect to the VFD')
             return -1
             
     def readOutputMotor(self, Print=False):
         if self.client.connect():
-            print("Connected to the Modbus Server/Slave")
+            print("Connected to the VFD")
             # Reading from a holding register with the below content.
             res = self.client.read_holding_registers(address=234, count=1, unit= self.slaveAddress)
             
@@ -137,12 +137,12 @@ class VFD_F800():
                 print(res)
                 return -1
         else:
-            print('Cannot connect to the Modbus Server/Slave')
+            print('Cannot connect to the VFD')
             return -1
             
     def readRunningFrequency(self, Print=False):
         if self.client.connect():
-            print("Connected to the Modbus Server/Slave")
+            print("Connected to the VFD")
             # Reading from a holding register with the below content.
             res = self.client.read_holding_registers(address=15, count=1, unit= self.slaveAddress)
             
@@ -154,12 +154,12 @@ class VFD_F800():
                 print(res)
                 return -1
         else:
-            print('Cannot connect to the Modbus Server/Slave')
+            print('Cannot connect to the VFD')
             return -1
 
     def readRunningSpeed(self, Print=False):
         if self.client.connect():
-            print("Connected to the Modbus Server/Slave")
+            print("Connected to the VFD")
             # Reading from a holding register with the below content.
             res = self.client.read_holding_registers(address=206, count=1, unit= self.slaveAddress)
             
@@ -171,12 +171,12 @@ class VFD_F800():
                 print(res)
                 return -1
         else:
-            print('Cannot connect to the Modbus Server/Slave')
+            print('Cannot connect to the VFD')
             return -1
             
     def readFaultHistory(self, Print = False):
         if self.client.connect():
-            print("Connected to the Modbus Server/Slave")
+            print("Connected to the VFD")
             response = self.client.read_holding_registers(address = 501, count = 1, unit = self.slaveAddress)
             if not response.isError():
                 Fault_code = decode(response.registers)
@@ -185,17 +185,17 @@ class VFD_F800():
                 print(response)
                 return -1
         else:
-            print('Cannot connect to the Modbus Server/Slave')
+            print('Cannot connect to the VFD')
             return -1
             
     def writeRunningFrequency(self, frequency_value):
         if self.client.connect():
-            print("Connected to the Modbus Server/Slave")
+            print("Connected to the VFD")
             # Writing to a holding register with the below content.
             self.client.write_register(address=15, value = frequency_value)
             
         else:
-            print('Cannot connect to the Modbus Server/Slave')
+            print('Cannot connect to the VFD')
             return -1
 
 
