@@ -204,16 +204,16 @@ class SCADA_Devices():
             self.SCADA_Data["Water_Data"]["Water_Meter_Reading"] = 10000#self.AMR.total_water_passed()
             self.SCADA_Data["Water_Data"]["Water_Level"] = self.Level_Transmitter.Water_Level(Print= Print)
         else:
-            self.SCADA_Data["Energy"]["Phase_A_Voltage"] = self.Energy_Meter.readVoltage(phase= 'A', Print = Print)
-            self.SCADA_Data["Energy"]["Phase_B_Voltage"] = self.Energy_Meter.readVoltage(phase= 'B', Print = Print)
-            self.SCADA_Data["Energy"]["Phase_C_Voltage"] = self.Energy_Meter.readVoltage(phase= 'C', Print = Print)
-            self.SCADA_Data["Energy"]["Line_AB_Voltage"] = self.Energy_Meter.readVoltage(line= 'AB', Print = Print)
-            self.SCADA_Data["Energy"]["Line_BC_Voltage"] = self.Energy_Meter.readVoltage(line= 'BC', Print = Print)
-            self.SCADA_Data["Energy"]["Line_CA_Voltage"] = self.Energy_Meter.readVoltage(line= 'CA', Print = Print)
+            self.SCADA_Data["Energy"]["Phase_A_Voltage"] = 230 + randint(-5, 5)
+            self.SCADA_Data["Energy"]["Phase_B_Voltage"] = 230 + randint(-5, 5)
+            self.SCADA_Data["Energy"]["Phase_C_Voltage"] = 230 + randint(-5, 5)
+            self.SCADA_Data["Energy"]["Line_AB_Voltage"] = 430 + randint(-5, 5)
+            self.SCADA_Data["Energy"]["Line_BC_Voltage"] = 430 + randint(-5, 5)
+            self.SCADA_Data["Energy"]["Line_CA_Voltage"] = 430 + randint(-5, 5)
             self.SCADA_Data["Energy"]["Active_Power"] = 30 + randint(-50, 50)/10
-            self.SCADA_Data["Energy"]["Phase_A_Current"] = self.SCADA_Data["Energy"]["Active_Power"]*1000/self.Energy_Meter.readVoltage(phase= 'A', Print = Print)
-            self.SCADA_Data["Energy"]["Phase_B_Current"] = self.SCADA_Data["Energy"]["Active_Power"]*1000/self.Energy_Meter.readVoltage(phase= 'B', Print = Print)
-            self.SCADA_Data["Energy"]["Phase_C_Current"] = self.SCADA_Data["Energy"]["Active_Power"]*1000/self.Energy_Meter.readVoltage(phase= 'C', Print = Print)
+            self.SCADA_Data["Energy"]["Phase_A_Current"] = self.SCADA_Data["Energy"]["Active_Power"]*1000/self.SCADA_Data["Energy"]["Phase_A_Voltage"]
+            self.SCADA_Data["Energy"]["Phase_B_Current"] = self.SCADA_Data["Energy"]["Active_Power"]*1000/self.SCADA_Data["Energy"]["Phase_B_Voltage"]
+            self.SCADA_Data["Energy"]["Phase_C_Current"] = self.SCADA_Data["Energy"]["Active_Power"]*1000/self.SCADA_Data["Energy"]["Phase_C_Voltage"]
             
             self.SCADA_Data["Energy"]["Power_Factor"] = 0.45 + randint(-2, 2)/10
             self.SCADA_Data["Energy"]["Load"] = (self.SCADA_Data["Energy"]["Active_Power"]**2 - self.SCADA_Data["Energy"]["Power_Factor"]**2)**0.5
@@ -241,8 +241,8 @@ broker = 'broker.hivemq.com'#'123.49.33.109' #MQTT broker address
 port = 1883#8083 #MQTT broker port
 SCADA.get_MQTT_Address(broker)
 SCADA.get_MQTT_Port(port)
-SCADA.get_Sub_Topic('scada_test')# Topic to publish
-SCADA.get_Pub_Topic('DMA/Sub/SCADA')# Topic to subscribe
+SCADA.get_Sub_Topic('scada_sub')# Topic to publish
+SCADA.get_Pub_Topic('scada_test')# Topic to subscribe
 
 SCADA.connect()
 SCADA.subscribe()
@@ -257,6 +257,7 @@ while True:
 
     if (toc - tic) >= delay_time:
         SCADA_Data_Json = SCADA.updateParameters(random= True)
+        #print(SCADA_Data_Json)
         SCADA.publish(payload= SCADA_Data_Json)
         tic = toc
     
