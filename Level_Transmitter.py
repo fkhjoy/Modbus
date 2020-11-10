@@ -10,7 +10,7 @@ def decode(lst):
     return int(s,0)
 
 class AR6451():
-    def __init__(self, client, slaveAddress = 1, m = 0.00010204082, b = 0):
+    def __init__(self, client, slaveAddress = 1, m = 102.04081632653, b = 0):
         
         self.slaveAddress = slaveAddress
         self.m = m
