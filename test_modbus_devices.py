@@ -102,5 +102,5 @@ class Modbus_Device():
 # water_level = 107.143*(P/1000 - 1.058) + 22
 # print("Water level", "{:.2f}".format(water_level), "cm")
 
-vfd = Modbus_Device(port= 'COM10', slaveAddress= 6)
-vfd.readRegister(register= 0, Print= True)
+LT = Modbus_Device(port= 'COM14', slaveAddress= 3, parity= 'E')
+LT.readRegister(register= 6, Print= True)
