@@ -20,13 +20,13 @@ from Energy_Meter import EnergyMeter_DZS500
 from Level_Transmitter import AR6451
 from VFD import VFD_F800
 import os
-#from AMR import AMR
+from AMR import AMR
 from pymodbus.client.sync import ModbusSerialClient
 
 
 class SCADA_Devices():
     def __init__(self, port = '/dev/ttyUSB0', method='rtu', baudrate=9600, timeout=3, 
-        parity='E', stopbits=1, bytesize=8, vfd_slaveAddress = 0, energy_meter_slaveAddress = 3, 
+        parity='N', stopbits=1, bytesize=8, vfd_slaveAddress = 0, energy_meter_slaveAddress = 3, 
         level_transmitter_slaveAddress = 2, amr_mode = 'BCM', amr_pin = 23, amr_flow_per_pulse = 10, 
         amr_past_water_flow = 100000, ID = None):
         
@@ -63,7 +63,7 @@ class SCADA_Devices():
         self.VFD = VFD_F800(client = self.client, slaveAddress= vfd_slaveAddress)
         self.Level_Transmitter = AR6451(client = self.client, slaveAddress= level_transmitter_slaveAddress)
         self.Energy_Meter = EnergyMeter_DZS500(client = self.client, slaveAddress= energy_meter_slaveAddress)
-        #self.AMR = AMR(mode= amr_mode, pin= amr_pin, flow_per_pulse= amr_flow_per_pulse, past_water_flow= amr_past_water_flow)
+        self.AMR = AMR(mode= amr_mode, pin= amr_pin, flow_per_pulse= amr_flow_per_pulse, past_water_flow= amr_past_water_flow)
         
         self.mqtt_client = mqtt.Client("Client", transport= 'websockets')
         self.mqtt_client.on_message = self.on_message
@@ -176,17 +176,17 @@ class SCADA_Devices():
     def get_Level_Transmitter_Address(self, address = 2):
         self.Level_Transmitter.get_Address(address= address)
 
-    # def get_AMR_Flow_Per_Pulse(self, flow_per_pulse):
-    #     self.AMR.get_flow_per_pulse(flow_per_pulse= flow_per_pulse)
+    def get_AMR_Flow_Per_Pulse(self, flow_per_pulse):
+        self.AMR.get_flow_per_pulse(flow_per_pulse= flow_per_pulse)
     
-    # def get_AMR_Flow_Unit(self, flow_unit):
-    #     self.AMR.get_flow_unit(flow_unit= flow_unit)
+    def get_AMR_Flow_Unit(self, flow_unit):
+        self.AMR.get_flow_unit(flow_unit= flow_unit)
     
-    # def get_AMR_Time_Unit(self, time_unit):
-    #     self.AMR.get_time_unit(time_unit= time_unit)
+    def get_AMR_Time_Unit(self, time_unit):
+        self.AMR.get_time_unit(time_unit= time_unit)
 
-    # def reset_Counter(self):
-    #     self.AMR.reset_counter()
+    def reset_Counter(self):
+        self.AMR.reset_counter()
         
     def makeTimeStamp(self):
         now = datetime.now()
@@ -322,7 +322,7 @@ while True:
 
     if (toc - tic) >= delay_time:
         SCADA_Data_Json = SCADA.updateParameters(random= True)
-        #print(SCADA_Data_Json)
+        print(SCADA_Data_Json)
         SCADA.publish(payload= SCADA_Data_Json)
         tic = toc
     
