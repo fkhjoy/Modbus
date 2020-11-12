@@ -1,4 +1,6 @@
 from pymodbus.client.sync import ModbusSerialClient
+import RPi.GPIO as GPIO
+import time
 
 def decode(lst):
     s = '0x'
@@ -12,11 +14,26 @@ def toggle_bit(number, bit_position):
 
 class VFD_F800():
     
-    def __init__(self, client, slaveAddress = 0):
+    def __init__(self, client, On_pin = 25, Off_pin = 26, slaveAddress = 0):
         
         self.slaveAddress = slaveAddress
         self.client = client
+        self.On_pin = On_pin
+        self.Off_pin = Off_pin
+        GPIO.setup(GPIO.BCM)
+        GPIO.setup(self.On_pin, GPIO.OUT)
+        GPIO.setup(self.Off_pin, GPIO.OUT)
     
+    def VFD_ON(self):
+        GPIO.output(self.On_pin, 1)
+        time.sleep(1)
+        GPIO.output(self.On_pin, 0)
+    
+    def VFD_OFF(self):
+        GPIO.output(self.Off_pin, 1)
+        time.sleep(1)
+        GPIO.output(self.Off_pin, 0)
+
     def get_Address(self, address):
         self.slaveAddress = address
     
