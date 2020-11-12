@@ -41,7 +41,7 @@ class VFD_F800():
         if self.client.connect():
             print("Connected to the VFD")
             # Reading from a holding register with the below content.
-            res = self.client.read_holding_registers(address=201, count=1, unit= self.slaveAddress)
+            res = self.client.read_holding_registers(address=200, count=1, unit= self.slaveAddress)
             
             if not res.isError():
                 if Print:
@@ -58,7 +58,7 @@ class VFD_F800():
         if self.client.connect():
             print("Connected to the VFD")
             # Reading from a holding register with the below content.
-            res = self.client.read_holding_registers(address=202, count=1, unit= self.slaveAddress)
+            res = self.client.read_holding_registers(address=201, count=1, unit= self.slaveAddress)
             
             if not res.isError():
                 if Print:
@@ -75,7 +75,7 @@ class VFD_F800():
         if self.client.connect():
             print("Connected to the VFD")
             # Reading from a holding register with the below content.
-            res = self.client.read_holding_registers(address=203, count=1, unit= self.slaveAddress)
+            res = self.client.read_holding_registers(address=202, count=1, unit= self.slaveAddress)
             
             if not res.isError():
                 if Print:
@@ -93,7 +93,7 @@ class VFD_F800():
         if self.client.connect():
             print("Connected to the VFD")
             # Reading from a holding register with the below content.
-            res = self.client.read_holding_registers(address=213, count=1, unit= self.slaveAddress)
+            res = self.client.read_holding_registers(address=212, count=1, unit= self.slaveAddress)
             
             if not res.isError():
                 if Print:
@@ -110,7 +110,7 @@ class VFD_F800():
         if self.client.connect():
             print("Connected to the VFD")
             # Reading from a holding register with the below content.
-            res = self.client.read_holding_registers(address=214, count=1, unit= self.slaveAddress)
+            res = self.client.read_holding_registers(address=213, count=1, unit= self.slaveAddress)
             
             if not res.isError():
                 if Print:
@@ -127,7 +127,7 @@ class VFD_F800():
         if self.client.connect():
             print("Connected to the VFD")
             # Reading from a holding register with the below content.
-            res = self.client.read_holding_registers(address=225, count=1, unit= self.slaveAddress)
+            res = self.client.read_holding_registers(address=224, count=1, unit= self.slaveAddress)
             
             if not res.isError():
                 if Print:
@@ -144,7 +144,7 @@ class VFD_F800():
         if self.client.connect():
             print("Connected to the VFD")
             # Reading from a holding register with the below content.
-            res = self.client.read_holding_registers(address=234, count=1, unit= self.slaveAddress)
+            res = self.client.read_holding_registers(address=233, count=1, unit= self.slaveAddress)
             
             if not res.isError():
                 if Print:
@@ -161,7 +161,7 @@ class VFD_F800():
         if self.client.connect():
             print("Connected to the VFD")
             # Reading from a holding register with the below content.
-            res = self.client.read_holding_registers(address=15, count=1, unit= self.slaveAddress)
+            res = self.client.read_holding_registers(address=14, count=1, unit= self.slaveAddress)
             
             if not res.isError():
                 if Print:
@@ -178,7 +178,7 @@ class VFD_F800():
         if self.client.connect():
             print("Connected to the VFD")
             # Reading from a holding register with the below content.
-            res = self.client.read_holding_registers(address=206, count=1, unit= self.slaveAddress)
+            res = self.client.read_holding_registers(address=205, count=1, unit= self.slaveAddress)
             
             if not res.isError():
                 if Print:
@@ -194,7 +194,7 @@ class VFD_F800():
     def readFaultHistory(self, Print = False):
         if self.client.connect():
             print("Connected to the VFD")
-            response = self.client.read_holding_registers(address = 501, count = 1, unit = self.slaveAddress)
+            response = self.client.read_holding_registers(address = 500, count = 1, unit = self.slaveAddress)
             if not response.isError():
                 Fault_code = decode(response.registers)
                 return Fault_code
@@ -209,7 +209,7 @@ class VFD_F800():
         if self.client.connect():
             print("Connected to the VFD")
             # Writing to a holding register with the below content.
-            self.client.write_register(address=15, value = frequency_value)
+            self.client.write_register(address=14, value = frequency_value)
             
         else:
             print('Cannot connect to the VFD')
