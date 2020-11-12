@@ -272,9 +272,9 @@ class SCADA_Devices():
             self.SCADA_Data["VFD"]["Motor_Operating_Current"] = self.VFD.readOutputCurrent(Print= Print)
             self.SCADA_Data["VFD"]["RPM"] = self.VFD.readRunningSpeed(Print= Print)
 
-            self.SCADA_Data["Water_Data"]["Water_Flow"] = 500#self.AMR.flow_rate()
+            self.SCADA_Data["Water_Data"]["Water_Flow"] = self.AMR.flow_rate()
             self.SCADA_Data["Water_Data"]["Water_Pressure"] = 341 # random value
-            self.SCADA_Data["Water_Data"]["Water_Meter_Reading"] = 10000#self.AMR.total_water_passed()
+            self.SCADA_Data["Water_Data"]["Water_Meter_Reading"] = self.AMR.total_water_passed()
             self.SCADA_Data["Water_Data"]["Water_Level"] = self.Level_Transmitter.Water_Level(Print= Print)
         else:
             self.SCADA_Data["Energy"]["Phase_A_Voltage"] = 230 + randint(-5, 5)
