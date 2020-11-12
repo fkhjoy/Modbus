@@ -231,7 +231,15 @@ class SCADA_Devices():
             self.mqtt_pub_topic = command["Pub_Topic"]
             self.mqtt_sub_topic = command["Sub_Topic"]
             self.mqtt_client.subscribe(self.mqtt_sub_topic)
-            
+        
+        elif command["Command"] == "ON":
+            self.VFD.VFD_ON()
+            self.publish(self.mqtt_pub_topic, "VFD Turned ON")
+        
+        elif command["Command"] == "ON":
+            self.VFD.VFD_OFF()
+            self.publish(self.mqtt_pub_topic, "VFD Turned OFF")
+
         else:
             self.publish(self.mqtt_pub_topic, "Error in command")
             
