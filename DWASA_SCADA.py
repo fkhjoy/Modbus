@@ -60,7 +60,7 @@ class SCADA_Devices():
             bytesize = self.bytesize
         )
 
-        self.VFD = VFD_F800(client = self.client, slaveAddress= vfd_slaveAddress)
+        self.VFD = VFD_F800(client = self.client, On_pin= 23, Off_pin= 24, slaveAddress= vfd_slaveAddress)
         self.Level_Transmitter = AR6451(client = self.client, slaveAddress= level_transmitter_slaveAddress)
         self.Energy_Meter = EnergyMeter_DZS500(client = self.client, slaveAddress= energy_meter_slaveAddress)
         self.AMR = AMR(mode= amr_mode, pin= amr_pin, flow_per_pulse= amr_flow_per_pulse, past_water_flow= amr_past_water_flow)
