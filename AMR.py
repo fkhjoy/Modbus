@@ -6,7 +6,7 @@ import time
 
 class AMR():
     def __init__(self, mode = 'BCM', pin = 23, flow_unit = 'cm', time_unit = 'min',
-                 flow_per_pulse = 1):
+                 flow_per_pulse = 1, past_water_flow = None):
         self.flow_unit = flow_unit
         self.time_unit = time_unit
         # Water passed for each pulse in the sensor
@@ -17,7 +17,10 @@ class AMR():
         # w = create a file for writing, if it's not already there
         # + = both read nad write
         self.file = open('Water_Passed.txt', 'w+') 
-        self.file.write(str(self.past_water_flow))
+	if past_water_flow != None:
+            self.file.write(str(self.past_water_flow))
+	else:
+            self.past_water_flow = int(self.file.read())
         self.file.close()
         # pin numbering mode.
         # 'BCM' means using GPIO numbering
