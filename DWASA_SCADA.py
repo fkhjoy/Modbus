@@ -232,13 +232,13 @@ class SCADA_Devices():
             self.mqtt_sub_topic = command["Sub_Topic"]
             self.mqtt_client.subscribe(self.mqtt_sub_topic)
         
-        elif command["Command"] == "ON":
-            self.VFD.VFD_ON()
-            self.publish(self.mqtt_pub_topic, "VFD Turned ON")
+        # elif command["Command"] == "ON":
+        #     self.VFD.VFD_ON()
+        #     self.publish(self.mqtt_pub_topic, "VFD Turned ON")
         
-        elif command["Command"] == "ON":
-            self.VFD.VFD_OFF()
-            self.publish(self.mqtt_pub_topic, "VFD Turned OFF")
+        # elif command["Command"] == "ON":
+        #     self.VFD.VFD_OFF()
+        #     self.publish(self.mqtt_pub_topic, "VFD Turned OFF")
 
         else:
             self.publish(self.mqtt_pub_topic, "Error in command")
@@ -277,12 +277,12 @@ class SCADA_Devices():
             self.SCADA_Data["Water_Data"]["Water_Meter_Reading"] = self.AMR.total_water_passed()
             self.SCADA_Data["Water_Data"]["Water_Level"] = self.Level_Transmitter.Water_Level(Print= Print)
         else:
-            self.SCADA_Data["Energy"]["Phase_A_Voltage"] = 230 + randint(-5, 5)
-            self.SCADA_Data["Energy"]["Phase_B_Voltage"] = 230 + randint(-5, 5)
-            self.SCADA_Data["Energy"]["Phase_C_Voltage"] = 230 + randint(-5, 5)
-            self.SCADA_Data["Energy"]["Line_AB_Voltage"] = 430 + randint(-5, 5)
-            self.SCADA_Data["Energy"]["Line_BC_Voltage"] = 430 + randint(-5, 5)
-            self.SCADA_Data["Energy"]["Line_CA_Voltage"] = 430 + randint(-5, 5)
+            self.SCADA_Data["Energy"]["Phase_A_Voltage"] = self.Energy_Meter.readVoltage(phase= 'A', Print = Print)
+            self.SCADA_Data["Energy"]["Phase_B_Voltage"] = self.Energy_Meter.readVoltage(phase= 'B', Print = Print)
+            self.SCADA_Data["Energy"]["Phase_C_Voltage"] = self.Energy_Meter.readVoltage(phase= 'C', Print = Print)
+            self.SCADA_Data["Energy"]["Line_AB_Voltage"] = self.Energy_Meter.readVoltage(line= 'AB', Print = Print)
+            self.SCADA_Data["Energy"]["Line_BC_Voltage"] = self.Energy_Meter.readVoltage(line= 'BC', Print = Print)
+            self.SCADA_Data["Energy"]["Line_CA_Voltage"] = self.Energy_Meter.readVoltage(line= 'CA', Print = Print)
             self.SCADA_Data["Energy"]["Active_Power"] = 30 + randint(-50, 50)/10
             self.SCADA_Data["Energy"]["Phase_A_Current"] = self.SCADA_Data["Energy"]["Active_Power"]*1000/self.SCADA_Data["Energy"]["Phase_A_Voltage"]
             self.SCADA_Data["Energy"]["Phase_B_Current"] = self.SCADA_Data["Energy"]["Active_Power"]*1000/self.SCADA_Data["Energy"]["Phase_B_Voltage"]
