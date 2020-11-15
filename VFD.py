@@ -1,5 +1,5 @@
 from pymodbus.client.sync import ModbusSerialClient
-import RPi.GPIO as GPIO
+# import RPi.GPIO as GPIO
 import time
 
 def decode(lst):
@@ -20,19 +20,19 @@ class VFD_F800():
         self.client = client
         self.On_pin = On_pin
         self.Off_pin = Off_pin
-        GPIO.setmode(GPIO.BCM)
-        GPIO.setup(self.On_pin, GPIO.OUT)
-        GPIO.setup(self.Off_pin, GPIO.OUT)
+        # GPIO.setmode(GPIO.BCM)
+        # GPIO.setup(self.On_pin, GPIO.OUT)
+        # GPIO.setup(self.Off_pin, GPIO.OUT)
     
-    def VFD_ON(self):
-        GPIO.output(self.On_pin, 1)
-        time.sleep(1)
-        GPIO.output(self.On_pin, 0)
+    # def VFD_ON(self):
+    #     GPIO.output(self.On_pin, 1)
+    #     time.sleep(1)
+    #     GPIO.output(self.On_pin, 0)
     
-    def VFD_OFF(self):
-        GPIO.output(self.Off_pin, 1)
-        time.sleep(1)
-        GPIO.output(self.Off_pin, 0)
+    # def VFD_OFF(self):
+    #     GPIO.output(self.Off_pin, 1)
+    #     time.sleep(1)
+    #     GPIO.output(self.Off_pin, 0)
 
     def get_Address(self, address):
         self.slaveAddress = address
