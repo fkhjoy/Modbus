@@ -6,7 +6,7 @@ import time
 
 class AMR():
     def __init__(self, mode = 'BCM', pin = 23, flow_unit = 'cm', time_unit = 'min',
-                 flow_per_pulse = 10, past_water_flow = 0):
+                 flow_per_pulse = 1, past_water_flow = 0):
         self.flow_unit = flow_unit
         self.time_unit = time_unit
         # Water passed for each pulse in the sensor
@@ -111,20 +111,11 @@ class AMR():
         self.pulse_count = 0
         self.prev_pulse_count = 0
 
+amr = AMR()
 
-'''
 while True:  
-    time.sleep(30)
-    amr.convertTo(flow_unit= 'L', time_unit = 'min')
-    f = amr.flow_rate()
-    print(f, amr.flow_rate_unit())
-    time.sleep(30)
-    amr.convertTo(flow_unit= 'L', time_unit = 'second')
-    f = amr.flow_rate()
-    print(f, amr.flow_rate_unit())
-    time.sleep(30)
-    amr.convertTo(flow_unit= 'L', time_unit = 'hour')
+    time.sleep(5)
     f = amr.flow_rate()
     print(f, amr.flow_rate_unit())
     #amr.reset_counter()
-'''
+

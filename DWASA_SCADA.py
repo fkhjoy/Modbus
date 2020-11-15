@@ -329,7 +329,7 @@ while True:
     toc = time.time()
 
     if (toc - tic) >= delay_time:
-        SCADA_Data_Json = SCADA.updateParameters(random= False, Print = True)
+        SCADA_Data_Json = SCADA.updateParameters(random= True, Print = True)
         print(SCADA_Data_Json)
         SCADA.publish(payload= SCADA_Data_Json)
         tic = toc
