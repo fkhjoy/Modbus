@@ -63,7 +63,7 @@ class VFD_F800():
             if not res.isError():
                 if Print:
                     print("Current:", decode(res.registers))
-                return decode(res.registers)*0.01
+                return decode(res.registers)*0.1
             else:
                 print(res)
                 return -1
