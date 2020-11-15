@@ -111,7 +111,7 @@ class AMR():
     def reset_counter(self):
         self.pulse_count = 0
         self.prev_pulse_count = 0
-
+'''
 amr = AMR()
 
 while True:  
@@ -120,3 +120,4 @@ while True:
     print(f, amr.flow_rate_unit())
     #amr.reset_counter()
 
+'''
