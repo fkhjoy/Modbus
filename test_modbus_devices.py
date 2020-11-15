@@ -103,4 +103,4 @@ class Modbus_Device():
 # print("Water level", "{:.2f}".format(water_level), "cm")
 
 vfd = Modbus_Device(port= 'COM9', slaveAddress= 6, parity= 'E')
-vfd.readRegister(register= 8, Print= True)
+vfd.readRegister(register= 213, Print= True)
