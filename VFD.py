@@ -14,13 +14,13 @@ def toggle_bit(number, bit_position):
 
 class VFD_F800():
     
-    def __init__(self, client, On_pin = 25, Off_pin = 26, slaveAddress = 0):
+    def __init__(self, client, On_pin = 25, Off_pin = 26, slaveAddress = 6):
         
         self.slaveAddress = slaveAddress
         self.client = client
         self.On_pin = On_pin
         self.Off_pin = Off_pin
-        GPIO.setup(GPIO.BCM)
+        GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.On_pin, GPIO.OUT)
         GPIO.setup(self.Off_pin, GPIO.OUT)
     
@@ -45,7 +45,7 @@ class VFD_F800():
             
             if not res.isError():
                 if Print:
-                    print(decode(res.registers))
+                    print("Frequency:", decode(res.registers))
                 return decode(res.registers)
             else:
                 print(res)
@@ -62,7 +62,7 @@ class VFD_F800():
             
             if not res.isError():
                 if Print:
-                    print(decode(res.registers))
+                    print("Current:", decode(res.registers))
                 return decode(res.registers)
             else:
                 print(res)
@@ -79,7 +79,7 @@ class VFD_F800():
             
             if not res.isError():
                 if Print:
-                    print(decode(res.registers))
+                    print("Voltage:", decode(res.registers))
                 return decode(res.registers)
             else:
                 print(res)

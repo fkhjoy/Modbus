@@ -26,7 +26,7 @@ from pymodbus.client.sync import ModbusSerialClient
 
 class SCADA_Devices():
     def __init__(self, port = '/dev/ttyUSB0', method='rtu', baudrate=9600, timeout=3, 
-        parity='N', stopbits=1, bytesize=8, vfd_slaveAddress = 0, energy_meter_slaveAddress = 3, 
+        parity='N', stopbits=1, bytesize=8, vfd_slaveAddress = 6, energy_meter_slaveAddress = 3, 
         level_transmitter_slaveAddress = 2, amr_mode = 'BCM', amr_pin = 23, amr_flow_per_pulse = 10, 
         amr_past_water_flow = 100000, ID = None):
         
@@ -320,7 +320,7 @@ SCADA.get_Pub_Topic('scada_test')# Topic to subscribe
 SCADA.connect()
 SCADA.subscribe()
 
-delay_time = 10
+delay_time = 30
 
 tic = time.time()
 
@@ -329,7 +329,7 @@ while True:
     toc = time.time()
 
     if (toc - tic) >= delay_time:
-        SCADA_Data_Json = SCADA.updateParameters(random= False)
+        SCADA_Data_Json = SCADA.updateParameters(random= False, Print = True)
         print(SCADA_Data_Json)
         SCADA.publish(payload= SCADA_Data_Json)
         tic = toc
