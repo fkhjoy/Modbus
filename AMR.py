@@ -17,10 +17,11 @@ class AMR():
         # w = create a file for writing, if it's not already there
         # + = both read nad write
         self.file = open('Water_Passed.txt', 'w+') 
-	if past_water_flow != None:
+        if past_water_flow != None:
             self.file.write(str(self.past_water_flow))
-	else:
+        else:
             self.past_water_flow = int(self.file.read())
+            
         self.file.close()
         # pin numbering mode.
         # 'BCM' means using GPIO numbering
