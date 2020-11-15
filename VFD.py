@@ -46,7 +46,7 @@ class VFD_F800():
             if not res.isError():
                 if Print:
                     print("Frequency:", decode(res.registers))
-                return decode(res.registers)
+                return decode(res.registers)*0.01
             else:
                 print(res)
                 return -1
@@ -63,7 +63,7 @@ class VFD_F800():
             if not res.isError():
                 if Print:
                     print("Current:", decode(res.registers))
-                return decode(res.registers)
+                return decode(res.registers)*0.01
             else:
                 print(res)
                 return -1
@@ -80,7 +80,7 @@ class VFD_F800():
             if not res.isError():
                 if Print:
                     print("Voltage:", decode(res.registers))
-                return decode(res.registers)
+                return decode(res.registers)*0.1
             else:
                 print(res)
                 return -1
@@ -97,8 +97,8 @@ class VFD_F800():
             
             if not res.isError():
                 if Print:
-                    print(decode(res.registers))
-                return decode(res.registers)
+                    print("Input Power: ", decode(res.registers))
+                return decode(res.registers)*0.01
             else:
                 print(res)
                 return -1
@@ -114,8 +114,8 @@ class VFD_F800():
             
             if not res.isError():
                 if Print:
-                    print(decode(res.registers))
-                return decode(res.registers)
+                    print("Output Power: ", decode(res.registers))
+                return decode(res.registers)*0.01
             else:
                 print(res)
                 return -1
@@ -131,7 +131,7 @@ class VFD_F800():
             
             if not res.isError():
                 if Print:
-                    print(decode(res.registers))
+                    print("Cumulative Power: ", decode(res.registers))
                 return decode(res.registers)
             else:
                 print(res)
@@ -148,7 +148,7 @@ class VFD_F800():
             
             if not res.isError():
                 if Print:
-                    print(decode(res.registers))
+                    print("Output Motor:", decode(res.registers))
                 return decode(res.registers)
             else:
                 print(res)
