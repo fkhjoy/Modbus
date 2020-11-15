@@ -270,12 +270,12 @@ class SCADA_Devices():
             self.SCADA_Data["VFD"]["Frequency"] = self.VFD.readOutputFrequency(Print= Print)
             self.SCADA_Data["VFD"]["Motor_Operating_Voltage"] = self.VFD.readOutputVoltage(Print= Print)
             self.SCADA_Data["VFD"]["Motor_Operating_Current"] = self.VFD.readOutputCurrent(Print= Print)
-            self.SCADA_Data["VFD"]["RPM"] = self.VFD.readRunningSpeed(Print= Print)
+            self.SCADA_Data["VFD"]["RPM"] = 3000#self.VFD.readRunningSpeed(Print= Print)
 
             self.SCADA_Data["Water_Data"]["Water_Flow"] = self.AMR.flow_rate()
             self.SCADA_Data["Water_Data"]["Water_Pressure"] = 341 # random value
             self.SCADA_Data["Water_Data"]["Water_Meter_Reading"] = self.AMR.total_water_passed()
-            self.SCADA_Data["Water_Data"]["Water_Level"] = self.Level_Transmitter.Water_Level(Print= Print)
+            self.SCADA_Data["Water_Data"]["Water_Level"] = 50#self.Level_Transmitter.Water_Level(Print= Print)
         else:
             self.SCADA_Data["Energy"]["Phase_A_Voltage"] = self.Energy_Meter.readVoltage(phase= 'A', Print = Print)
             self.SCADA_Data["Energy"]["Phase_B_Voltage"] = self.Energy_Meter.readVoltage(phase= 'B', Print = Print)
@@ -283,7 +283,7 @@ class SCADA_Devices():
             self.SCADA_Data["Energy"]["Line_AB_Voltage"] = self.Energy_Meter.readVoltage(line= 'AB', Print = Print)
             self.SCADA_Data["Energy"]["Line_BC_Voltage"] = self.Energy_Meter.readVoltage(line= 'BC', Print = Print)
             self.SCADA_Data["Energy"]["Line_CA_Voltage"] = self.Energy_Meter.readVoltage(line= 'CA', Print = Print)
-            self.SCADA_Data["Energy"]["Active_Power"] = 30 + randint(-50, 50)/10
+            self.SCADA_Data["Energy"]["Active_Power"] = self.VFD.readOutputPower()
             self.SCADA_Data["Energy"]["Phase_A_Current"] = self.SCADA_Data["Energy"]["Active_Power"]*1000/self.SCADA_Data["Energy"]["Phase_A_Voltage"]
             self.SCADA_Data["Energy"]["Phase_B_Current"] = self.SCADA_Data["Energy"]["Active_Power"]*1000/self.SCADA_Data["Energy"]["Phase_B_Voltage"]
             self.SCADA_Data["Energy"]["Phase_C_Current"] = self.SCADA_Data["Energy"]["Active_Power"]*1000/self.SCADA_Data["Energy"]["Phase_C_Voltage"]

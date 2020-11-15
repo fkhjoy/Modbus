@@ -98,7 +98,7 @@ class VFD_F800():
             if not res.isError():
                 if Print:
                     print("Input Power: ", decode(res.registers))
-                return decode(res.registers)*0.01
+                return decode(res.registers)*0.1*1000
             else:
                 print(res)
                 return -1
@@ -115,7 +115,7 @@ class VFD_F800():
             if not res.isError():
                 if Print:
                     print("Output Power: ", decode(res.registers))
-                return decode(res.registers)*0.01
+                return decode(res.registers)*0.1*1000
             else:
                 print(res)
                 return -1
