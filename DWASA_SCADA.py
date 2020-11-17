@@ -319,7 +319,7 @@ SCADA.get_Pub_Topic('scada_test')# Topic to subscribe
 SCADA.connect()
 SCADA.subscribe()
 
-delay_time = 3
+delay_time = 30
 
 tic = time.time()
 
