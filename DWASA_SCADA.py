@@ -27,7 +27,8 @@ from pymodbus.client.sync import ModbusSerialClient
 class SCADA_Devices():
     def __init__(self, port = '/dev/ttyUSB0', method='rtu', baudrate=9600, timeout=3, 
         parity='E', stopbits=1, bytesize=8, vfd_slaveAddress = 6, energy_meter_slaveAddress = 3, 
-        level_transmitter_slaveAddress = 2, amr_mode = 'BCM', amr_pin = 23, amr_flow_per_pulse = 10,amr_past_water_flow = None, ID = None):
+        level_transmitter_slaveAddress = 2, amr_mode = 'BCM', amr_pin = 23, amr_flow_per_pulse = 10,
+        amr_past_water_flow = None, ID = None, data_sending_period = 60):
         
         #Read ID from file
         
@@ -64,6 +65,7 @@ class SCADA_Devices():
         self.Energy_Meter = EnergyMeter_DZS500(client = self.client, slaveAddress= energy_meter_slaveAddress)
         self.AMR = AMR(mode= amr_mode, pin= amr_pin, flow_per_pulse= amr_flow_per_pulse, past_water_flow = amr_past_water_flow)
         
+        self.data_sending_period = data_sending_period
         self.mqtt_client = mqtt.Client("Client", transport= 'websockets')
         self.mqtt_client.on_message = self.on_message
         self.command = ''
@@ -74,6 +76,7 @@ class SCADA_Devices():
         self.SCADA_Data = {
                 "ID":1500,
                 "Time_Stamp":"2019-11-06 16:04:52",
+                "Data_Sending_Period": 60,
                 "Energy":{
                     "Phase_A_Voltage":223.4,
                     "Phase_B_Voltage":223.4,
@@ -219,6 +222,9 @@ class SCADA_Devices():
         elif command["Command"] == "Change_ID":
             self.get_ID(command["ID"])
             self.publish(self.mqtt_pub_topic, "New ID set successfully!")
+        elif command["Command"] == "Change_Data_Sending_Period":
+            self.data_sending_period = command["Data_Sending_Period"]
+            self.publish(self.mqtt_pub_topic, "New period set successfully!")
         elif command["Command"] == "Change_MQTT_Data":
             self.get_MQTT_Connection_Data(command["Address"], command["Port"])
             self.publish(self.mqtt_pub_topic, "New MQTT data set successfully!")
@@ -247,6 +253,7 @@ class SCADA_Devices():
     def updateParameters(self, Print = False, random = False):
         self.SCADA_Data["ID"] = self.ID
         self.SCADA_Data["Time_Stamp"] = self.makeTimeStamp()
+        self.SCADA_Data["Data_Sending_Period"] = self.data_sending_period
 
         if not random:
             self.SCADA_Data["Energy"]["Phase_A_Voltage"] = self.Energy_Meter.readVoltage(phase= 'A', Print = Print)
@@ -319,7 +326,7 @@ SCADA.get_Pub_Topic('scada_test')# Topic to subscribe
 SCADA.connect()
 SCADA.subscribe()
 
-delay_time = 30
+delay_time = SCADA.data_sending_period
 
 tic = time.time()
 
