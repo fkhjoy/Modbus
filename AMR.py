@@ -19,7 +19,7 @@ class AMR():
         # + = both read nad write
         current_folder = os.path.dirname(os.path.abspath(__file__))
         Water_Passed_file = os.path.join(current_folder, 'Water_Passed.txt')
-        self.ID_file = open(Water_Passed_file, 'r+')
+        self.file = open(Water_Passed_file, 'r+')
         if past_water_flow != None:
             self.file.write(str(self.past_water_flow))
         else:
