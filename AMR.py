@@ -3,6 +3,7 @@ This class is for reading water flow from AMR
 '''
 import RPi.GPIO as GPIO  
 import time
+import os
 
 class AMR():
     def __init__(self, mode = 'BCM', pin = 23, flow_unit = 'cm', time_unit = 'min',
@@ -16,7 +17,9 @@ class AMR():
         # Make a file for saving past water
         # w = create a file for writing, if it's not already there
         # + = both read nad write
-        self.file = open('Water_Passed.txt', 'r+') 
+        current_folder = os.path.dirname(os.path.abspath(__file__))
+        Water_Passed_file = os.path.join(current_folder, 'Water_Passed.txt')
+        self.ID_file = open(Water_Passed_file, 'r+')
         if past_water_flow != None:
             self.file.write(str(self.past_water_flow))
         else:
