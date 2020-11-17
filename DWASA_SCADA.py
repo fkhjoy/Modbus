@@ -66,7 +66,7 @@ class SCADA_Devices():
         self.AMR = AMR(mode= amr_mode, pin= amr_pin, flow_per_pulse= amr_flow_per_pulse, past_water_flow = amr_past_water_flow)
         
         self.data_sending_period = data_sending_period
-        self.mqtt_client = mqtt.Client("Client", transport= 'websockets')
+        self.mqtt_client = mqtt.Client("Client") #, transport= 'websockets')
         self.mqtt_client.on_message = self.on_message
         self.command = ''
         self.last_command = ''
@@ -316,8 +316,8 @@ class SCADA_Devices():
 
 SCADA = SCADA_Devices()
 
-broker = '123.49.33.109' #MQTT broker address
-port = 8083 #MQTT broker port
+broker = 'broker.hivemq.com' # '123.49.33.109' #MQTT broker address
+port = 1883 # 8083 #MQTT broker port
 SCADA.get_MQTT_Address(broker)
 SCADA.get_MQTT_Port(port)
 SCADA.get_Sub_Topic('scada_sub')# Topic to publish
