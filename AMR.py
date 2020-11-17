@@ -60,7 +60,7 @@ class AMR():
         # This way noise will be canceled
         GPIO.setup(self.pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
         # Adding Interrupt callback function
-        GPIO.add_event_detect(self.pin, GPIO.FALLING, callback = self.pulse_counter, bouncetime = 200)
+        #GPIO.add_event_detect(self.pin, GPIO.FALLING, callback = self.pulse_counter, bouncetime = 200)
         
     def pulse_counter(self, channel):
         self.pulse_count += 1
@@ -102,6 +102,7 @@ class AMR():
         water_flow = ((self.pulse_count - self.prev_pulse_count)*self.flow_per_pulse)*self.units[self.flow_unit]
         #print("Water Flow:", water_flow)
         self.prev_pulse_count = self.pulse_count
+        return 2
         if elapsed_time != 0:
             return water_flow/elapsed_time
         else:
