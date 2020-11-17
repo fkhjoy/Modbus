@@ -102,7 +102,6 @@ class AMR():
         water_flow = ((self.pulse_count - self.prev_pulse_count)*self.flow_per_pulse)*self.units[self.flow_unit]
         #print("Water Flow:", water_flow)
         self.prev_pulse_count = self.pulse_count
-        return 2
         if elapsed_time != 0:
             return water_flow/elapsed_time
         else:
