@@ -16,7 +16,7 @@ class AMR():
         # Make a file for saving past water
         # w = create a file for writing, if it's not already there
         # + = both read nad write
-        self.file = open('Water_Passed.txt', 'w+') 
+        self.file = open('Water_Passed.txt', 'r+') 
         if past_water_flow != None:
             self.file.write(str(self.past_water_flow))
         else:
