@@ -29,7 +29,7 @@ class SCADA_Devices():
     def __init__(self, port = '/dev/ttyUSB0', method='rtu', baudrate=9600, timeout=3, 
         parity='E', stopbits=1, bytesize=8, vfd_slaveAddress = 6, energy_meter_slaveAddress = 3, 
         level_transmitter_slaveAddress = 2, amr_mode = 'BCM', amr_pin = 24, amr_flow_per_pulse = 10,
-        amr_past_water_flow = None, ID = None, data_sending_period = 60):
+        amr_past_water_flow = None, ID = None, data_sending_period = 60, init_file):
         
         #Read ID from file
         
@@ -322,7 +322,7 @@ SCADA = SCADA_Devices(port=init.loc[0]['port'], method=init.loc[0]['method'], ba
     parity=init.loc[0]['parity'], stopbits=int(init.loc[0]['stopbits']), bytesize=int(init.loc[0]['bytesize']), vfd_slaveAddress=int(init.loc[0]['vfd_slaveAddress']),
     energy_meter_slaveAddress=int(init['energy_meter_slaveAddress']), level_transmitter_slaveAddress=int(init['level_transmitter_slaveAddress']),
     amr_mode=init.loc[0]['amr_mode'], amr_pin=int(init.loc[0]['amr_pin']), amr_flow_per_pulse=int(init.loc[0]['amr_flow_per_pulse']),
-    amr_past_water_flow=init.loc[0]['amr_past_water_flow'], ID=init.loc[0]['ID'], data_sending_period=init.loc[0]['data_sending_period'])
+    amr_past_water_flow=init.loc[0]['amr_past_water_flow'], ID=init.loc[0]['ID'], data_sending_period=init.loc[0]['data_sending_period'], init_file=init)
 
 
 broker = init.loc[0]['broker_address'] #'123.49.33.109' #MQTT broker address
